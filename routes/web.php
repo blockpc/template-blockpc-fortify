@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Notes\ListNotes;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -11,3 +12,7 @@ Route::view('dashboard', 'dashboard')
     ->name('dashboard');
 
 require __DIR__.'/settings.php';
+
+Route::get('lista-de-notas', ListNotes::class)
+    ->middleware(['auth', 'verified'])
+    ->name('notes.index');

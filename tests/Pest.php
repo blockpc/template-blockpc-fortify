@@ -11,6 +11,8 @@
 |
 */
 
+use App\Models\User;
+
 pest()->extend(Tests\TestCase::class)
     ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
     ->in('Feature');
@@ -37,7 +39,7 @@ pest()->extend(Tests\TestCase::class)
 |
 */
 
-function something()
+function new_user(): User
 {
-    // ..
+    return User::factory()->create();
 }

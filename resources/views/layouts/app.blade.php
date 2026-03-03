@@ -2,4 +2,5 @@
     <flux:main>
         {{ $slot }}
     </flux:main>
+    <livewire:alert />
 </x-layouts::app.sidebar>

@@ -1,4 +1,4 @@
-# Proyecto Blog SJM (Plantilla Blockpc)
+# Plantilla Blockpc (Fortify)
 
 Aplicación Laravel 12 con Livewire 4 + Flux UI, autenticación con Fortify y gestión de roles/permisos sobre Spatie Permission.
 

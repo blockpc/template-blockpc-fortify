@@ -39,7 +39,13 @@ pest()->extend(Tests\TestCase::class)
 |
 */
 
-function new_user(): User
+function new_user(?string $role = null): User
 {
-    return User::factory()->create();
+    $user = User::factory()->create();
+
+    if ($role) {
+        $user->assignRole($role);
+    }
+
+    return $user;
 }

@@ -47,7 +47,7 @@
             </div>
 
             <div>
-                <flux:textarea label="{{ __('Content') }}" wire:model.defer="content" />
+                <flux:textarea label="{{ __('Content') }}" wire:model="content" />
             </div>
 
             <div class="flex justify-end gap-2">
@@ -62,11 +62,11 @@
         <div class="space-y-3">
             <h2 class="text-lg">{{ __('Edit Note') }}</h2>
             <div>
-                <flux:input label="Título" wire:model.defer="title" />
+                <flux:input label="{{ __('Title') }}" wire:model="title" />
             </div>
 
             <div>
-                <flux:textarea label="Contenido" wire:model.defer="content" />
+                <flux:textarea label="{{ __('Content') }}" wire:model="content" />
             </div>
 
             <div class="flex justify-end gap-2">

@@ -14,4 +14,8 @@ Route::prefix('sistema')
     ->group(function () {
         Route::view('dashboard', 'dashboard')->name('dashboard');
         Route::get('lista-de-notas', ListNotes::class)->name('notes.index');
+
+        Route::prefix('permisos')->group(function () {
+            Route::livewire('/lista-de-permisos', 'system::permission.table')->name('permissions.table');
+        });
     });

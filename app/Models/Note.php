@@ -10,9 +10,31 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Note extends Model
 {
+    /** @use HasFactory<\Database\Factories\NoteFactory> */
     use HasFactory;
 
-    protected $fillable = ['title', 'content', 'author_id'];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'title',
+        'content',
+        'author_id',
+    ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'author_id' => 'integer',
+        ];
+    }
 
     public function author(): BelongsTo
     {

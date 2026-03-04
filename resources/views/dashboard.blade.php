@@ -20,7 +20,7 @@
             </div>
             <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700 p-2">
                 <div class="flex flex-col space-y-2">
-                    <div>Modal para crear un nota</div>
+                    <div>Modal para crear una nota de usuario</div>
                     <livewire:notes.create-dashboard-note />
                 </div>
             </div>

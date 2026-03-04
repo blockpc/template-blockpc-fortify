@@ -16,68 +16,87 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 @forelse ($this->notes as $note)
                     <flux:card>
-                        <flux:heading size="lg">{{ $note->title }}</flux:heading>
-                        <flux:text class="mt-2 mb-4">{{ \Illuminate\Support\Str::limit($note->content, 120) }}</flux:text>
-                        <div class="flex gap-2">
-                            <flux:spacer />
-                            <flux:button size="xs" variant="primary" color="green" wire:click="openEdit({{ $note->id }})">{{ __('Edit Note') }}</flux:button>
-                            <flux:button size="xs" variant="danger" wire:click="openDelete({{ $note->id }})">{{ __('Delete Note') }}</flux:button>
+                        <div class="flex flex-col justify-between h-full">
+                            <div class="">
+                                <flux:heading size="lg">{{ $note->title }}</flux:heading>
+                                <flux:text class="mt-2 mb-4">{{ \Illuminate\Support\Str::limit($note->content, 120) }}</flux:text>
+                            </div>
+                            <div class="flex gap-2">
+                                <flux:spacer />
+                                <flux:button size="xs" variant="subtle" wire:click="openNote({{ $note->id }})">{{ __('Read Note') }}</flux:button>
+                                <flux:button size="xs" variant="primary" color="green" wire:click="openEdit({{ $note->id }})">{{ __('Edit Note') }}</flux:button>
+                                <flux:button size="xs" variant="danger" wire:click="openDelete({{ $note->id }})">{{ __('Delete Note') }}</flux:button>
+                            </div>
                         </div>
                     </flux:card>
                 @empty
                     <p class="col-span-full text-sm text-neutral-600 dark:text-neutral-400">{{ __('No notes found.') }}</p>
                 @endforelse
             </div>
+            <div>
+                <flux:pagination :paginator="$this->notes" />
+            </div>
         </div>
     </div>
     {{-- modal crear --}}
-    <flux:modal name="create-note" wire:model="createOpen" title="{{ __('New Note') }}">
+    <flux:modal name="create-note" wire:model="createOpen" class="w-1/2" :closable="false">
         <div class="space-y-3">
+            <h2 class="text-lg">{{ __('New Note') }}</h2>
             <div>
-                <flux:input label="Título" wire:model="title" />
-                @error('title') <div class="text-sm text-red-600">{{ $message }}</div> @enderror
+                <flux:input label="{{ __('Title') }}" wire:model="title" />
             </div>
 
             <div>
-                <flux:textarea label="Contenido" wire:model.defer="content" />
-                @error('content') <div class="text-sm text-red-600">{{ $message }}</div> @enderror
+                <flux:textarea label="{{ __('Content') }}" wire:model.defer="content" />
             </div>
 
             <div class="flex justify-end gap-2">
-                <flux:button variant="subtle" wire:click="$set('createOpen', false)">{{ __('Cancel') }}</flux:button>
-                <flux:button wire:click="create">{{ __('Create Note') }}</flux:button>
+                <flux:button size="sm" variant="primary" color="yellow" wire:click="cancel">{{ __('Cancel') }}</flux:button>
+                <flux:button size="sm" variant="primary" color="blue" wire:click="create">{{ __('Create Note') }}</flux:button>
             </div>
         </div>
     </flux:modal>
 
     {{-- modal editar --}}
-    <flux:modal name="edit-note" wire:model="editOpen" title="{{ __('Edit Note') }}">
+    <flux:modal name="edit-note" wire:model="editOpen" class="w-1/2" :closable="false">
         <div class="space-y-3">
+            <h2 class="text-lg">{{ __('Edit Note') }}</h2>
             <div>
                 <flux:input label="Título" wire:model.defer="title" />
-                @error('title') <div class="text-sm text-red-600">{{ $message }}</div> @enderror
             </div>
 
             <div>
                 <flux:textarea label="Contenido" wire:model.defer="content" />
-                @error('content') <div class="text-sm text-red-600">{{ $message }}</div> @enderror
             </div>
 
             <div class="flex justify-end gap-2">
-                <flux:button variant="subtle" wire:click="$set('editOpen', false)">{{ __('Cancel') }}</flux:button>
-                <flux:button wire:click="update">{{ __('Save changes') }}</flux:button>
+                <flux:button size="sm" variant="primary" color="yellow" wire:click="cancel">{{ __('Cancel') }}</flux:button>
+                <flux:button size="sm" variant="primary" color="green" wire:click="update">{{ __('Save changes') }}</flux:button>
             </div>
         </div>
     </flux:modal>
 
     {{-- modal eliminar --}}
-    <flux:modal name="delete-note" wire:model="deleteOpen" title="{{ __('Delete Note') }}">
+    <flux:modal name="delete-note" wire:model="deleteOpen" class="w-1/2" :closable="false">
         <div class="space-y-4">
+            <h2 class="text-lg">{{ __('Delete Note') }}</h2>
             <p>{{ __('Are you sure you want to delete this note? This action cannot be undone.') }}</p>
 
             <div class="flex justify-end gap-2">
-                <flux:button variant="subtle" wire:click="$set('deleteOpen', false)">{{ __('Cancel') }}</flux:button>
-                <flux:button variant="danger" wire:click="destroy">{{ __('Delete Note') }}</flux:button>
+                <flux:button size="sm" variant="primary" color="yellow" wire:click="cancel">{{ __('Cancel') }}</flux:button>
+                <flux:button size="sm" variant="danger" wire:click="destroy">{{ __('Delete Note') }}</flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
+    {{-- modal ver nota completa --}}
+    <flux:modal name="view-note" wire:model="viewOpen" class="w-1/2" :closable="false">
+        <div class="space-y-4">
+            <h2 class="text-lg">{{ $title }}</h2>
+            <p class="text-sm">{{ $content }}</p>
+
+            <div class="flex justify-end gap-2">
+                <flux:button size="sm" variant="primary" wire:click="cancel">{{ __('Close') }}</flux:button>
             </div>
         </div>
     </flux:modal>

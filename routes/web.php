@@ -7,12 +7,11 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
 require __DIR__.'/settings.php';
 
-Route::get('lista-de-notas', ListNotes::class)
+Route::prefix('sistema')
     ->middleware(['auth', 'verified'])
-    ->name('notes.index');
+    ->group(function () {
+        Route::view('dashboard', 'dashboard')->name('dashboard');
+        Route::get('lista-de-notas', ListNotes::class)->name('notes.index');
+    });

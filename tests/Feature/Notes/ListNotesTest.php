@@ -13,7 +13,7 @@ it('shows the notes index page', function () {
 
     $this->get(route('notes.index'))
         ->assertOk()
-        ->assertSee('Notas');
+        ->assertSee(__('Notes'));
 });
 
 it('renders the livewire component', function () {

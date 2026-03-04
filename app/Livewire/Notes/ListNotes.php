@@ -5,21 +5,24 @@ declare(strict_types=1);
 namespace App\Livewire\Notes;
 
 use App\Models\Note;
+use Blockpc\Traits\PaginationTrait;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Collection as SupportCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Livewire\Attributes\Url;
 use Livewire\Component;
 
 final class ListNotes extends Component
 {
+    use PaginationTrait;
+
     public bool $createOpen = false;
 
     public bool $editOpen = false;
+
+    public bool $viewOpen = false;
 
     public ?int $editingId = null;
 
@@ -31,8 +34,10 @@ final class ListNotes extends Component
 
     public string $content = '';
 
-    #[Url(as: 'q')]
-    public string $search = '';
+    public function mount(): void
+    {
+        $this->paginate = 9;
+    }
 
     #[Layout('layouts.app')]
     #[Title('Notas')]
@@ -42,13 +47,13 @@ final class ListNotes extends Component
     }
 
     #[Computed()]
-    public function notes(): Collection|SupportCollection
+    public function notes(): LengthAwarePaginator
     {
         return Note::query()
             ->forUser(auth()->id())
             ->search($this->search)
             ->latest()
-            ->get();
+            ->paginate($this->paginate);
     }
 
     public function create(): void
@@ -56,6 +61,11 @@ final class ListNotes extends Component
         $data = $this->validate([
             'title' => ['required', 'string', 'max:255', Rule::unique('notes')->where('author_id', auth()->id())],
             'content' => ['required', 'string'],
+        ], [
+            'title.unique' => __('You already have a note with this title. Please choose a different one.'),
+        ], [
+            'title' => __('Title'),
+            'content' => __('Content'),
         ]);
 
         $data['author_id'] = auth()->id();
@@ -65,11 +75,11 @@ final class ListNotes extends Component
         $this->resetModalsVariables();
     }
 
-    public function openEdit(int $id): void
+    public function openEdit(int $noteId): void
     {
         $note = Note::query()
             ->forUser(auth()->id())
-            ->findOrFail($id);
+            ->findOrFail($noteId);
 
         $this->editingId = $note->id;
         $this->title = $note->title;
@@ -82,6 +92,11 @@ final class ListNotes extends Component
         $data = $this->validate([
             'title' => ['required', 'string', 'max:255', Rule::unique('notes')->where('author_id', auth()->id())->ignore($this->editingId)],
             'content' => ['required', 'string'],
+        ], [
+            'title.unique' => __('You already have a note with this title. Please choose a different one.'),
+        ], [
+            'title' => __('Title'),
+            'content' => __('Content'),
         ]);
 
         $note = Note::query()
@@ -92,14 +107,25 @@ final class ListNotes extends Component
         $this->resetModalsVariables();
     }
 
-    public function openDelete(int $id): void
+    public function openDelete(int $noteId): void
     {
         $note = Note::query()
             ->forUser(auth()->id())
-            ->findOrFail($id);
+            ->findOrFail($noteId);
 
         $this->deletingId = $note->id;
         $this->deleteOpen = true;
+    }
+
+    public function openNote(int $noteId): void
+    {
+        $note = Note::query()
+            ->forUser(auth()->id())
+            ->findOrFail($noteId);
+
+        $this->title = $note->title;
+        $this->content = $note->content;
+        $this->viewOpen = true;
     }
 
     public function destroy(): void
@@ -113,8 +139,13 @@ final class ListNotes extends Component
         $this->resetModalsVariables();
     }
 
+    public function cancel(): void
+    {
+        $this->resetModalsVariables();
+    }
+
     private function resetModalsVariables(): void
     {
-        $this->reset(['title', 'content', 'editingId', 'deletingId', 'createOpen', 'editOpen', 'deleteOpen']);
+        $this->reset(['title', 'content', 'editingId', 'deletingId', 'createOpen', 'editOpen', 'deleteOpen', 'viewOpen']);
     }
 }

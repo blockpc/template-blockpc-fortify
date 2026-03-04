@@ -67,7 +67,7 @@ select:focus[data-flux-control] {
 
 /** Alertas */
 .alert {
-        @apply border-t border-b rounded-md px-4 py-3 text-sm;
+    @apply border-t border-b rounded-md px-4 py-3 text-sm;
 }
 .alert-danger {
     @apply bg-red-100 border-red-500 text-red-700;

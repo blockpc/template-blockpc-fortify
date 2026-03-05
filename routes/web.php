@@ -22,5 +22,6 @@ Route::prefix('sistema')
         Route::prefix('roles')->group(function () {
             Route::livewire('/lista-de-roles', 'system::roles.table')->name('roles.table');
             Route::livewire('/nuevo-rol', 'system::roles.create')->name('roles.create');
+            Route::livewire('/editar-rol/{role}', 'system::roles.edit')->name('roles.edit');
         });
     });

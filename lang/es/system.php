@@ -44,6 +44,8 @@ return [
         'subtitle' => 'Muestra los roles que pueden ser asignados a los usuarios.',
         'search-roles' => 'Buscar roles...',
         'back_to_table' => 'Volver al listado de roles',
+        'super_admin_permission_error' => 'Uno de los permisos seleccionados no es válido.',
+        'name_already_exists' => 'Ya existe un rol con ese nombre.',
         'table' => [
             'name' => 'Nombre',
             'description' => 'Descripción',
@@ -65,6 +67,12 @@ return [
             'description' => 'Descripción',
             'permissions' => 'Permisos',
             'save' => 'Guardar cambios',
+            'success_message' => 'El rol se ha actualizado exitosamente.',
+            'form' => [
+                'display_name' => 'Ingresa el nombre del rol.',
+                'description' => 'Proporciona una descripción para el rol.',
+                'select_permissions' => 'Selecciona los permisos que deseas asignar a este rol.',
+            ],
             'validations' => [
                 'display_name.required' => 'El nombre es obligatorio.',
                 'display_name.string' => 'El nombre debe ser una cadena de texto.',
@@ -94,8 +102,6 @@ return [
                 'description.string' => 'La descripción debe ser una cadena de texto.',
                 'description.max' => 'La descripción no puede tener más de 255 caracteres.',
             ],
-            'super_admin_permission_error' => 'Uno de los permisos seleccionados no es válido.',
-            'name_already_exists' => 'Ya existe un rol con ese nombre.',
             'success_message' => 'El rol se ha creado exitosamente.',
         ],
     ],

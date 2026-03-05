@@ -10,6 +10,7 @@ use Livewire\Component;
 
 new class extends Component
 {
+    public Role $role;
     public string $display_name = '';
     public string $description = '';
     public array $permissions_selecteds = [];
@@ -18,7 +19,11 @@ new class extends Component
 
     public function mount(): void
     {
-        abort_unless(auth()->user()?->can('roles.create'), 403);
+        abort_unless(auth()->user()?->can('roles.edit'), 403);
+
+        $this->display_name = $this->role->display_name;
+        $this->description = $this->role->description;
+        $this->permissions_selecteds = $this->role->permissions()->pluck('name')->values()->all();
     }
 
     #[Computed()]
@@ -41,7 +46,7 @@ new class extends Component
             ->pluck('key', 'key');
     }
 
-    public function save()
+    public function save(): mixed
     {
         $this->validate([
             'display_name' => 'required|string|max:255',
@@ -50,31 +55,47 @@ new class extends Component
             'permissions_selecteds.*' => 'string|exists:permissions,name',
         ]);
 
-        if (in_array('super admin', $this->permissions_selecteds) && !auth()->user()->hasRole('sudo')) {
-            $this->addError('permissions_selecteds', __('system.roles.super_admin_permission_error'));
+        if ($this->checkSuperAdminPermission($this->permissions_selecteds) === false) {
             return null;
         }
 
         $sluggedName = Str::slug($this->display_name);
-        if (Role::where('name', $sluggedName)->exists()) {
-            $this->addError('display_name', __('system.roles.name_already_exists'));
+        if ($this->checkSluggedName($sluggedName) === false) {
             return null;
         }
 
         DB::transaction(function () use ($sluggedName) {
-            $role = Role::create([
+            $this->role->update([
                 'name' => $sluggedName,
                 'display_name' => $this->display_name,
                 'description' => $this->description,
-                'is_editable' => true,
             ]);
 
-            $role->syncPermissions($this->permissions_selecteds);
+            $this->role->syncPermissions($this->permissions_selecteds);
         });
 
-        session()->flash('success', __('system.roles.create.success_message'));
+        session()->flash('success', __('system.roles.edit.success_message'));
 
         return redirect()->route('roles.table');
     }
 
+    private function checkSluggedName(string $sluggedName): bool
+    {
+        if (Role::where('name', $sluggedName)->where('id', '!=', $this->role->id)->exists()) {
+            $this->addError('display_name', __('system.roles.name_already_exists'));
+            return false;
+       }
+
+       return true;
+    }
+
+    private function checkSuperAdminPermission(array $permissions): bool
+    {
+        if (in_array('super admin', $permissions, true) && !auth()->user()->hasRole('sudo')) {
+            $this->addError('permissions_selecteds', __('system.roles.super_admin_permission_error'));
+            return false;
+        }
+
+        return true;
+    }
 };

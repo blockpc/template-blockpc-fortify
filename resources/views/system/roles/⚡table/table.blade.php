@@ -42,7 +42,7 @@
                             <span class="text-xs italic">{{ $role->description }}</span>
                         </td>
                         <td class="td text-right">
-                            {{-- <flux:button variant="primary" color="green" size="sm" href="{{ route('roles.edit') }}">{{ __('system.roles.buttons.edit') }}</flux:button> --}}
+                            <flux:button variant="primary" color="green" size="sm" href="{{ route('roles.edit', $role->id) }}">{{ __('system.roles.buttons.edit') }}</flux:button>
                         </td>
                     </tr>
                 @empty

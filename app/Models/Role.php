@@ -6,10 +6,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Permission\Models\Role as ModelsRole;
 
 final class Role extends ModelsRole
 {
+    use HasFactory;
+
     protected $fillable = ['name', 'display_name', 'description', 'guard_name', 'is_editable'];
 
     protected function casts(): array

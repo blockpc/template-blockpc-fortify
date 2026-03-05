@@ -13,7 +13,6 @@ beforeEach(function () {
 });
 
 it('un usuario sin permiso no puede acceder a crear un rol', function () {
-    // Assertions
     $this->actingAs($this->user)->get(route('roles.create'))->assertForbidden();
 });
 

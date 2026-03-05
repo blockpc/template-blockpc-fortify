@@ -21,14 +21,17 @@ new class extends Component
 
     public string $description = '';
 
+    public function mount(): void
+    {
+        abort_unless(auth()->user()?->can('permissions.index'), 403);
+    }
+
     #[Computed()]
     public function permissions(): LengthAwarePaginator
     {
         return Permission::with('roles')
             ->visibleToUser()
-            ->when($this->key, function ($query) {
-                $query->where('key', $this->key);
-            })
+            ->byKey($this->key)
             ->search($this->search)
             ->paginate($this->paginate);
     }

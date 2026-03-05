@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\Permission\Models\Role as ModelsRole;
 
 final class Role extends ModelsRole
@@ -15,5 +17,25 @@ final class Role extends ModelsRole
         return [
             'is_editable' => 'boolean',
         ];
+    }
+
+    #[Scope]
+    public function visibleToUser($query): Builder
+    {
+        if (auth()->user() && auth()->user()->hasRole('sudo')) {
+            return $query;
+        }
+
+        return $query->where('name', '!=', 'sudo');
+    }
+
+    #[Scope]
+    public function search($query, ?string $search)
+    {
+        if (empty($search)) {
+            return $query;
+        }
+
+        return $query->whereLike(['name', 'display_name', 'description'], $search);
     }
 }

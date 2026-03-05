@@ -25,6 +25,9 @@
 
             <flux:sidebar.nav>
                 <flux:sidebar.group :heading="__('System')" class="grid">
+                    <flux:sidebar.item icon="lock-closed" :href="route('roles.table')" :current="request()->routeIs('roles.*')" wire:navigate>
+                        {{ __('system.roles.menu') }}
+                    </flux:sidebar.item>
                     <flux:sidebar.item icon="lock-closed" :href="route('permissions.table')" :current="request()->routeIs('permissions.*')" wire:navigate>
                         {{ __('system.permissions.menu') }}
                     </flux:sidebar.item>

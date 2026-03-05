@@ -18,4 +18,9 @@ Route::prefix('sistema')
         Route::prefix('permisos')->group(function () {
             Route::livewire('/lista-de-permisos', 'system::permission.table')->name('permissions.table');
         });
+
+        Route::prefix('roles')->group(function () {
+            Route::livewire('/lista-de-roles', 'system::roles.table')->name('roles.table');
+            Route::livewire('/nuevo-rol', 'system::roles.create')->name('roles.create');
+        });
     });

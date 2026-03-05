@@ -23,6 +23,7 @@ it('un usuario con role sudo puede ver el permiso super admin', function () {
 
 it('un usuario con otro role no puede ver el permiso super admin', function () {
     $admin = new_user(role: 'admin');
+    $admin->givePermissionTo('permissions.index');
     $this->actingAs($admin)->get(route('permissions.table'))->assertOk();
 
     Livewire::actingAs($admin)
@@ -32,6 +33,7 @@ it('un usuario con otro role no puede ver el permiso super admin', function () {
 
 it('puede buscar permisos por nombre, display_name, descripción y key', function () {
     $user = new_user(role: 'admin');
+    $user->givePermissionTo('permissions.index');
     $this->actingAs($user)->get(route('permissions.table'))->assertOk();
 
     Livewire::actingAs($user)
@@ -42,6 +44,7 @@ it('puede buscar permisos por nombre, display_name, descripción y key', functio
 
 it('puede filtrar permisos por clave', function () {
     $user = new_user(role: 'admin');
+    $user->givePermissionTo('permissions.index');
     $this->actingAs($user)->get(route('permissions.table'))->assertOk();
 
     Livewire::actingAs($user)
@@ -53,6 +56,7 @@ it('puede filtrar permisos por clave', function () {
 
 it('un usuario sin permiso obtiene un error 403', function () {
     $user = new_user(role: 'user');
+    $user->givePermissionTo('permissions.index');
     $firstPermission = Permission::where('name', 'users.create')->first();
     $this->actingAs($user)->get(route('permissions.table'))->assertOk();
 
@@ -64,7 +68,7 @@ it('un usuario sin permiso obtiene un error 403', function () {
 
 it('al editar un permiso se muestran los datos correctos', function () {
     $user = new_user(role: 'admin');
-    $user->givePermissionTo('permissions.edit');
+    $user->givePermissionTo(['permissions.index', 'permissions.edit']);
     $firstPermission = Permission::where('name', 'users.create')->first();
     $this->actingAs($user)->get(route('permissions.table'))->assertOk();
 

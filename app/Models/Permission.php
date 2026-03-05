@@ -42,10 +42,23 @@ final class Permission extends ModelsPermission
      * If the user does not have the 'sudo' role, exclude the 'super admin' permission.
      */
     #[Scope]
-    public function visibleToUser($query): Builder
+    public function visibleToUser(Builder $query): Builder
     {
         return $query->when(auth()->check() && ! auth()->user()->hasRole('sudo'), function ($query) {
             $query->where('name', '!=', 'super admin');
         });
+    }
+
+    /**
+     * Scope a query to filter permissions by their key.
+     */
+    #[Scope]
+    public function byKey(Builder $query, ?string $key): Builder
+    {
+        if (empty($key)) {
+            return $query;
+        }
+
+        return $query->where('key', $key);
     }
 }

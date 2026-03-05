@@ -11,9 +11,13 @@ use Livewire\Component;
 new class extends Component
 {
     public string $display_name = '';
+
     public string $description = '';
+
     public array $permissions_selecteds = [];
+
     public string $key = '';
+
     public string $permissions_search = '';
 
     public function mount(): void
@@ -50,14 +54,16 @@ new class extends Component
             'permissions_selecteds.*' => 'string|exists:permissions,name',
         ]);
 
-        if (in_array('super admin', $this->permissions_selecteds) && !auth()->user()->hasRole('sudo')) {
+        if (in_array('super admin', $this->permissions_selecteds) && ! auth()->user()->hasRole('sudo')) {
             $this->addError('permissions_selecteds', __('system.roles.super_admin_permission_error'));
+
             return null;
         }
 
         $sluggedName = Str::slug($this->display_name);
         if (Role::where('name', $sluggedName)->exists()) {
             $this->addError('display_name', __('system.roles.name_already_exists'));
+
             return null;
         }
 
@@ -76,5 +82,4 @@ new class extends Component
 
         return redirect()->route('roles.table');
     }
-
 };

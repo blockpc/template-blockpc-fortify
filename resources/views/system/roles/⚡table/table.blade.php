@@ -13,6 +13,11 @@
                 {{ session()->get('success') }}
             </flux:callout>
         @endif
+        @if ( session()->has('danger') )
+            <flux:callout variant="danger">
+                {{ session()->get('danger') }}
+            </flux:callout>
+        @endif
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-2">
                 <flux:input icon="magnifying-glass" :loading="false" :clearable="true" placeholder="{{ __('system.roles.search-roles') }}" wire:model.live.debounce.500ms="search" class="max-w-64" />
@@ -41,8 +46,9 @@
                         <td class="td">
                             <span class="text-xs italic">{{ $role->description }}</span>
                         </td>
-                        <td class="td text-right">
+                        <td class="td text-right space-x-2">
                             <flux:button variant="primary" color="green" size="sm" href="{{ route('roles.edit', $role->id) }}">{{ __('system.roles.buttons.edit') }}</flux:button>
+                            <flux:button variant="danger" size="sm" wire:click="confirmDelete({{ $role->id }})">{{ __('system.roles.buttons.delete') }}</flux:button>
                         </td>
                     </tr>
                 @empty
@@ -57,4 +63,25 @@
 
         <flux:pagination :paginator="$this->roles" />
     </div>
+
+    {{-- modal eliminar --}}
+    <flux:modal name="delete-note" wire:model="deleteModalVisible" class="w-1/2" :closable="false">
+        <div class="space-y-4">
+            <flux:fieldset>
+                <flux:legend>{{ __('system.roles.delete.title') }}</flux:legend>
+                <flux:description>{{ trans('system.roles.delete.confirmation_message', ['name' => $roleNameToDelete]) }}</flux:description>
+                <div class="space-y-4">
+                    <flux:input :label="__('system.roles.delete.name_rol')" type="text" placeholder="{{ $roleNameToDelete }}" />
+                    <flux:input wire:model="password" :label="__('system.roles.delete.password')" type="password" required autocomplete="current-password" />
+                    @error('password') <span class="text-sm text-red-600">{{ $message }}</span> @enderror
+                </div>
+            </flux:fieldset>
+
+
+            <div class="flex justify-end gap-2">
+                <flux:button size="sm" variant="primary" color="yellow" wire:click="cancel">{{ __('Cancel') }}</flux:button>
+                <flux:button size="sm" variant="danger" wire:click="destroyRole">{{ __('system.roles.delete.button') }}</flux:button>
+            </div>
+        </div>
+    </flux:modal>
 </div>

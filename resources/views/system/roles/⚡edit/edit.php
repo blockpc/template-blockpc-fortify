@@ -11,10 +11,15 @@ use Livewire\Component;
 new class extends Component
 {
     public Role $role;
+
     public string $display_name = '';
+
     public string $description = '';
+
     public array $permissions_selecteds = [];
+
     public string $key = '';
+
     public string $permissions_search = '';
 
     public function mount(): void
@@ -83,16 +88,18 @@ new class extends Component
     {
         if (Role::where('name', $sluggedName)->where('id', '!=', $this->role->id)->exists()) {
             $this->addError('display_name', __('system.roles.name_already_exists'));
-            return false;
-       }
 
-       return true;
+            return false;
+        }
+
+        return true;
     }
 
     private function checkSuperAdminPermission(array $permissions): bool
     {
-        if (in_array('super admin', $permissions, true) && !auth()->user()->hasRole('sudo')) {
+        if (in_array('super admin', $permissions, true) && ! auth()->user()->hasRole('sudo')) {
             $this->addError('permissions_selecteds', __('system.roles.super_admin_permission_error'));
+
             return false;
         }
 

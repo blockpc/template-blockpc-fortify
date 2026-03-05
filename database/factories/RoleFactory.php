@@ -22,7 +22,7 @@ final class RoleFactory extends Factory
         return [
             'name' => $this->faker->unique()->slug(2),
             'display_name' => $this->faker->sentence(),
-            'description' => $this->faker->paragraph(),
+            'description' => $this->faker->text(200),
             'is_editable' => true,
             'guard_name' => 'web',
         ];

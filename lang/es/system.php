@@ -104,5 +104,15 @@ return [
             ],
             'success_message' => 'El rol se ha creado exitosamente.',
         ],
+        'delete' => [
+            'title' => 'Eliminar Rol',
+            'button' => 'Sí, quiero eliminar este rol',
+            'name_rol' => 'Nombre del rol',
+            'password' => 'Contraseña',
+            'confirmation_message' => '¿Estás seguro de que deseas eliminar este rol? Esta acción no se puede deshacer. Escriba :name y su contraseña para confirmar.',
+            'success_message' => 'El rol se ha eliminado exitosamente.',
+            'no_role_selected' => 'No se ha seleccionado ningún rol para eliminar.',
+            'cannot_delete_role' => 'El rol seleccionado no se puede eliminar.',
+        ],
     ],
 ];

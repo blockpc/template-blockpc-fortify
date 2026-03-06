@@ -24,4 +24,10 @@ Route::prefix('sistema')
             Route::livewire('/nuevo-rol', 'system::roles.create')->name('roles.create');
             Route::livewire('/editar-rol/{role}', 'system::roles.edit')->name('roles.edit');
         });
+
+        Route::prefix('usuarios')->group(function () {
+            Route::livewire('/lista-de-usuarios', 'system::users.table')->name('users.table');
+            Route::livewire('/nuevo-usuario', 'system::users.create')->name('users.create');
+            // Route::livewire('/editar-usuario/{user}', 'system::users.edit')->name('users.edit');
+        });
     });

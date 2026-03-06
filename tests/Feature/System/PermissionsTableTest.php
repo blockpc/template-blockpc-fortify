@@ -4,7 +4,7 @@ use App\Models\Permission;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Livewire\Livewire;
 
-uses()->group('permissions');
+uses()->group('permissions', 'system');
 
 beforeEach(function () {
     $this->seed(RolesAndPermissionsSeeder::class);

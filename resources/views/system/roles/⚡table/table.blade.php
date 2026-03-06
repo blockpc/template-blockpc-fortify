@@ -5,8 +5,6 @@
         <flux:separator variant="subtle" />
     </div>
 
-    <flux:heading class="sr-only">{{ __('system.roles.title') }}</flux:heading>
-
     <div class="flex flex-col space-y-2">
         @if ( session()->has('success') )
             <flux:callout variant="success">
@@ -69,10 +67,10 @@
         <div class="space-y-4">
             <flux:fieldset>
                 <flux:legend>{{ __('system.roles.delete.title') }}</flux:legend>
-                <flux:description>{{ trans('system.roles.delete.confirmation_message', ['name' => $roleNameToDelete]) }}</flux:description>
+                <flux:description>{{ trans('system.roles.delete.confirmation_message', ['name' => $current_name]) }}</flux:description>
                 <div class="space-y-4">
-                    <flux:input :label="__('system.roles.delete.name_rol')" type="text" placeholder="{{ $roleNameToDelete }}" />
-                    <flux:input wire:model="password" :label="__('system.roles.delete.password')" type="password" required autocomplete="current-password" />
+                    <flux:input wire:model="name" :label="__('system.roles.delete.name_rol')" type="text" placeholder="{{ $current_name }}" required autocomplete="off" />
+                    <flux:input wire:model="password" :label="__('system.roles.delete.password')" type="password" required autocomplete="off" />
                     @error('password') <span class="text-sm text-red-600">{{ $message }}</span> @enderror
                 </div>
             </flux:fieldset>

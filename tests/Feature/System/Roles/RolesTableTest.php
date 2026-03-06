@@ -4,7 +4,7 @@ use App\Models\Role;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Livewire\Livewire;
 
-uses()->group('roles');
+uses()->group('roles', 'system');
 
 beforeEach(function () {
     $this->seed(RolesAndPermissionsSeeder::class);
@@ -35,14 +35,16 @@ it('puede buscar roles por name, display_name, descripción', function () {
 
 it('se puede eliminar un rol', function () {
     $user = new_user(role: 'admin');
-    $user->givePermissionTo('roles.index');
-    $role = Role::factory()->create();
+    $user->givePermissionTo(['roles.index', 'roles.delete']);
+    $role = Role::factory()->create(
+        ['name' => 'test-role', 'guard_name' => 'web', 'display_name' => 'Test role']
+    );
 
     Livewire::actingAs($user)
         ->test('system::roles.table')
         ->call('confirmDelete', $role->id)
         ->assertSet('deleteModalVisible', true)
-        ->set('roleName', $role->display_name)
+        ->set('name', 'Test role')
         ->set('password', 'password')
         ->call('destroyRole')
         ->assertSet('deleteModalVisible', false)
@@ -53,18 +55,18 @@ it('se puede eliminar un rol', function () {
 
 it("no se puede eliminar el rol 'sudo'", function () {
     $user = new_user(role: 'admin');
-    $user->givePermissionTo('roles.index');
+    $user->givePermissionTo(['roles.index', 'roles.delete']);
 
     $sudoRole = Role::query()->firstOrCreate(
         ['name' => 'sudo', 'guard_name' => 'web'],
-        ['display_name' => 'Sudo', 'description' => 'System role', 'is_editable' => false],
+        ['display_name' => 'Super Administrador', 'description' => 'System role', 'is_editable' => false],
     );
 
     Livewire::actingAs($user)
         ->test('system::roles.table')
         ->call('confirmDelete', $sudoRole->id)
         ->assertSet('deleteModalVisible', true)
-        ->set('roleName', $sudoRole->display_name)
+        ->set('name', 'Super Administrador')
         ->set('password', 'password')
         ->call('destroyRole')
         ->assertSet('deleteModalVisible', false)

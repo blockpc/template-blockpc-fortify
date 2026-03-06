@@ -15,15 +15,15 @@ new class extends Component
 
     public ?int $roleToDeleteId = null;
 
-    public string $roleNameToDelete = '';
+    public string $current_name = '';
 
-    public string $roleName = '';
+    public string $name = '';
 
     public string $password = '';
 
     public function mount(): void
     {
-        abort_unless(auth()->user()?->can('roles.index'), 403);
+        abort_unless(auth()->user()?->can('roles.index'), 403, __('system.roles.403.roles-index'));
     }
 
     #[Computed()]
@@ -38,6 +38,8 @@ new class extends Component
 
     public function confirmDelete(int $roleId): void
     {
+        abort_unless(auth()->user()?->can('roles.delete'), 403, __('system.roles.403.roles-delete'));
+
         $this->roleToDeleteId = $roleId;
         $roleToDelete = Role::query()->find($this->roleToDeleteId);
 
@@ -48,20 +50,20 @@ new class extends Component
             return;
         }
 
-        $this->roleNameToDelete = $roleToDelete->display_name;
+        $this->current_name = $roleToDelete->display_name;
 
         $this->deleteModalVisible = true;
     }
 
     public function cancel(): void
     {
-        $this->reset(['deleteModalVisible', 'roleToDeleteId', 'roleNameToDelete', 'roleName', 'password']);
+        $this->reset(['deleteModalVisible', 'roleToDeleteId', 'current_name', 'name', 'password']);
     }
 
     public function destroyRole(): void
     {
         $this->validate([
-            'roleName' => ['required', new AreEqualsRule($this->roleNameToDelete, __('system.roles.delete.invalid_role_name'))],
+            'name' => ['required', new AreEqualsRule($this->current_name, __('system.roles.delete.invalid_role_name'))],
             'password' => 'required|current_password',
         ]);
 

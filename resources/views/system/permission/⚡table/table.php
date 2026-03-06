@@ -23,7 +23,7 @@ new class extends Component
 
     public function mount(): void
     {
-        abort_unless(auth()->user()?->can('permissions.index'), 403);
+        abort_unless(auth()->user()?->can('permissions.index'), 403, __('system.permissions.403.permissions-index'));
     }
 
     #[Computed()]
@@ -53,9 +53,7 @@ new class extends Component
 
     public function editPermission(int $permissionId): void
     {
-        if (! auth()->user()->can('permissions.edit')) {
-            abort(403);
-        }
+        abort_unless(auth()->user()?->can('permissions.edit'), 403, __('system.permissions.403.permissions-edit'));
 
         $permission = Permission::findOrFail($permissionId);
         $this->editingPermissionId = $permissionId;

@@ -33,7 +33,7 @@ final class Role extends ModelsRole
     }
 
     #[Scope]
-    public function search($query, ?string $search)
+    public function search(Builder $query, ?string $search): Builder
     {
         if (empty($search)) {
             return $query;

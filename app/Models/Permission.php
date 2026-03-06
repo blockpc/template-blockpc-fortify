@@ -6,10 +6,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Permission\Models\Permission as ModelsPermission;
 
 final class Permission extends ModelsPermission
 {
+    use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *

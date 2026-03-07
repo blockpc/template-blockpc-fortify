@@ -45,7 +45,7 @@ new class extends Component
 
         if (! $roleToDelete) {
             $this->cancel();
-            session()->flash('danger', __('system.roles.delete.no_role_selected'));
+            session()->flash('error', __('system.roles.delete.no_role_selected'));
 
             return;
         }
@@ -69,7 +69,7 @@ new class extends Component
 
         if (! $this->roleToDeleteId) {
             $this->cancel();
-            session()->flash('danger', __('system.roles.delete.no_role_selected'));
+            session()->flash('error', __('system.roles.delete.no_role_selected'));
 
             return;
         }
@@ -78,13 +78,13 @@ new class extends Component
 
         if (! $roleToDelete) {
             $this->cancel();
-            session()->flash('danger', __('system.roles.delete.no_role_selected'));
+            session()->flash('error', __('system.roles.delete.no_role_selected'));
 
             return;
         }
 
         if ($roleToDelete->name === 'sudo') {
-            session()->flash('danger', __('system.roles.delete.cannot_delete_role'));
+            session()->flash('error', __('system.roles.delete.cannot_delete_role'));
             $this->cancel();
 
             return;

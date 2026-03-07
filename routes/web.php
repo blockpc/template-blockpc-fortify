@@ -28,6 +28,6 @@ Route::prefix('sistema')
         Route::prefix('usuarios')->group(function () {
             Route::livewire('/lista-de-usuarios', 'system::users.table')->name('users.table');
             Route::livewire('/nuevo-usuario', 'system::users.create')->name('users.create');
-            // Route::livewire('/editar-usuario/{user}', 'system::users.edit')->name('users.edit');
+            Route::livewire('/editar-usuario/{user}', 'system::users.edit')->name('users.edit');
         });
     });

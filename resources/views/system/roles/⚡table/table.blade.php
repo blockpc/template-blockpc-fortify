@@ -6,16 +6,8 @@
     </div>
 
     <div class="flex flex-col space-y-2">
-        @if ( session()->has('success') )
-            <flux:callout variant="success">
-                {{ session()->get('success') }}
-            </flux:callout>
-        @endif
-        @if ( session()->has('danger') )
-            <flux:callout variant="danger">
-                {{ session()->get('danger') }}
-            </flux:callout>
-        @endif
+        @include('partials.flash')
+
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-2">
                 <flux:input icon="magnifying-glass" :loading="false" :clearable="true" placeholder="{{ __('system.roles.search-roles') }}" wire:model.live.debounce.500ms="search" class="max-w-64" />
@@ -24,6 +16,7 @@
                 <flux:button variant="primary" color="blue" size="sm" href="{{ route('roles.create') }}">{{ __('system.roles.buttons.create') }}</flux:button>
             </div>
         </div>
+
         <x-tables.table>
             <x-slot name="thead">
                 <tr class="tr">

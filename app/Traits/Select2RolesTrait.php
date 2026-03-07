@@ -23,12 +23,44 @@ trait Select2RolesTrait
             ->pluck('display_name', 'id');
     }
 
-    public function selectRole($roleId): void
+    public function selectRole(int|string $roleId): void
     {
-        if (in_array($roleId, $this->selectedRolesIds)) {
-            $this->selectedRolesIds = array_diff($this->selectedRolesIds, [$roleId]);
-        } else {
+        $roleId = (int) $roleId;
+        $isSelected = in_array($roleId, $this->selectedRolesIds, true);
+
+        if ($isSelected) {
+            $this->selectedRolesIds = array_values(array_diff($this->selectedRolesIds, [$roleId]));
+        }
+
+        if (! $isSelected) {
             $this->selectedRolesIds[] = $roleId;
         }
+
+        if (! isset($this->user)) {
+            return;
+        }
+
+        if ($isSelected) {
+            $this->user->roles()->detach($roleId);
+            $this->user->load('roles');
+
+            return;
+        }
+
+        $this->user->roles()->syncWithoutDetaching([$roleId]);
+        $this->user->load('roles');
+    }
+
+    public function loadRolesIds(): void
+    {
+        $this->selectedRolesIds = $this->user->roles()->pluck('id')->toArray();
+    }
+
+    public function deleteRoleId(int|string $roleId): void
+    {
+        $roleId = (int) $roleId;
+        $this->user->roles()->detach($roleId);
+        $this->selectedRolesIds = array_values(array_diff($this->selectedRolesIds, [$roleId]));
+        $this->user->load('roles');
     }
 }

@@ -8,6 +8,8 @@
     <flux:heading class="sr-only">{{ __('system.permissions.title') }}</flux:heading>
 
     <div class="flex flex-col space-y-2">
+        @include('partials.flash')
+
         <div class="flex space-x-2">
             <flux:input icon="magnifying-glass" :loading="false" :clearable="true" placeholder="{{ __('system.permissions.search-permissions') }}" wire:model.live.debounce.500ms="search" class="max-w-64" />
 
@@ -18,6 +20,7 @@
                 @endforeach
             </flux:select>
         </div>
+
         <x-tables.table>
             <x-slot name="thead">
                 <tr class="tr">

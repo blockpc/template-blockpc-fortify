@@ -22,7 +22,7 @@
                     <flux:legend>{{ __('system.users.create.passwords.title') }}</flux:legend>
                     <flux:description>{{ trans('system.users.create.passwords.description') }}</flux:description>
 
-                    <div class="flex items-center space-x-4 mb-6">
+                    <div class="flex items-center space-x-4">
                         <div>{{ __('system.users.create.passwords.auto_generate_label') }}</div>
                         <x-toggle name="create_password_user" wire:model.live="auto_password" />
                     </div>
@@ -38,26 +38,39 @@
                     <flux:legend>{{ __('system.users.create.roles.title') }}</flux:legend>
                     <flux:description>{{ trans('system.users.create.roles.description') }}</flux:description>
 
-                    <x-select2-multiple
-                        name="roles"
-                        title="system.users.create.form.select_roles"
-                        :options="$this->roles"
-                        :selected_ids="$selectedRolesIds"
-                        search="searchRole"
-                        click="selectRole"
-                    />
+                    <div>
+                        <x-select2-multiple
+                            name="roles"
+                            title="system.users.create.form.select_roles"
+                            :options="$this->roles"
+                            :selected_ids="$selectedRolesIds"
+                            search="searchRole"
+                            click="selectRole"
+                        />
+                    </div>
                 </flux:fieldset>
 
                 <flux:fieldset>
                     <flux:legend>{{ __('system.users.create.permissions.title') }}</flux:legend>
                     <flux:description>{{ trans('system.users.create.permissions.description') }}</flux:description>
+
+                    <div>
+                        <x-select2-multiple
+                            name="permissions"
+                            title="system.users.create.form.select_permissions"
+                            :options="$this->permissions"
+                            :selected_ids="$selectedPermissionsIds"
+                            search="searchPermission"
+                            click="selectPermission"
+                        />
+                    </div>
                 </flux:fieldset>
             </div>
 
-            <flux:separator variant="subtle" />
+            <flux:separator variant="subtle" class="my-4" />
 
             <div class="flex items-center justify-between">
-                <div class="">
+                <div>
                     <flux:button variant="subtle" href="{{ route('users.table') }}" class="w-full">
                         {{ __('system.users.back_to_table') }}
                     </flux:button>

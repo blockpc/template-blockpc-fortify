@@ -46,7 +46,7 @@ new #[Title('Lista de Usuarios')] class extends Component
 
         if (! $userToDelete) {
             $this->cancel();
-            session()->flash('danger', __('system.users.delete.no_user_selected'));
+            session()->flash('error', __('system.users.delete.no_user_selected'));
 
             return;
         }
@@ -72,21 +72,21 @@ new #[Title('Lista de Usuarios')] class extends Component
 
         if (! $userToDelete) {
             $this->cancel();
-            session()->flash('danger', __('system.users.delete.no_user_selected'));
+            session()->flash('error', __('system.users.delete.no_user_selected'));
 
             return;
         }
 
         if ($userToDelete->id === auth()->id()) {
             $this->cancel();
-            session()->flash('danger', __('system.users.delete.cannot_delete_yourself'));
+            session()->flash('error', __('system.users.delete.cannot_delete_yourself'));
 
             return;
         }
 
         if ($userToDelete->hasRole('sudo')) {
             $this->cancel();
-            session()->flash('danger', __('system.users.delete.cannot_delete_sudo'));
+            session()->flash('error', __('system.users.delete.cannot_delete_sudo'));
 
             return;
         }

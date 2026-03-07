@@ -13,23 +13,26 @@ beforeEach(function () {
     $this->user = new_user();
 });
 
-// UsersCreateTest
+// UsersEditTest
 
-it('un usuario sin permiso no puede acceder a crear un usuario', function () {
-    $this->actingAs($this->user)->get(route('users.create'))->assertForbidden();
+it('un usuario sin permiso no puede acceder a editar un usuario', function () {
+    $user = User::factory()->create();
+    $this->actingAs($this->user)->get(route('users.edit', ['user' => $user]))->assertForbidden();
 });
 
-it('un usuario con permiso puede acceder a crear un usuario', function () {
-    $this->user->givePermissionTo('users.create');
+it('un usuario con permiso puede acceder a editar un usuario', function () {
+    $this->user->givePermissionTo('users.edit');
+    $user = User::factory()->create();
 
-    $this->actingAs($this->user)->get(route('users.create'))->assertOk();
+    $this->actingAs($this->user)->get(route('users.edit', ['user' => $user]))->assertOk();
 });
 
-it('un usuario con permiso puede crear un usuario', function () {
-    $this->user->givePermissionTo('users.create');
+it('un usuario con permiso puede editar un usuario', function () {
+    $user = User::factory()->create();
+    $this->user->givePermissionTo('users.edit');
 
     Livewire::actingAs($this->user)
-        ->test('system::users.create')
+        ->test('system::users.edit', ['user' => $user])
         ->set('name', 'Test User')
         ->set('email', 'test@mail.com')
         ->set('password', 'password')
@@ -43,12 +46,13 @@ it('un usuario con permiso puede crear un usuario', function () {
     ]);
 });
 
-it('no puede crear un usuario con un email duplicado', function () {
-    $this->user->givePermissionTo('users.create');
-    $existingUser = \App\Models\User::factory()->create(['email' => 'mail@mail.com']);
+it('no puede editar un usuario con un email duplicado', function () {
+    $user = User::factory()->create();
+    $this->user->givePermissionTo('users.edit');
+    $existingUser = User::factory()->create(['email' => 'mail@mail.com']);
 
     Livewire::actingAs($this->user)
-        ->test('system::users.create')
+        ->test('system::users.edit', ['user' => $user])
         ->set('name', 'Test User')
         ->set('email', 'mail@mail.com')
         ->set('password', 'password')
@@ -57,11 +61,12 @@ it('no puede crear un usuario con un email duplicado', function () {
         ->assertHasErrors(['email']);
 });
 
-it('no puede crear un usuario si las contraseñas no coinciden', function () {
-    $this->user->givePermissionTo('users.create');
+it('no puede editar un usuario si las contraseñas no coinciden', function () {
+    $user = User::factory()->create();
+    $this->user->givePermissionTo('users.edit');
 
     Livewire::actingAs($this->user)
-        ->test('system::users.create')
+        ->test('system::users.edit', ['user' => $user])
         ->set('name', 'Test User')
         ->set('email', 'mail@mail.com')
         ->set('password', 'password')
@@ -70,33 +75,17 @@ it('no puede crear un usuario si las contraseñas no coinciden', function () {
         ->assertHasErrors(['password']);
 });
 
-it('se puede crear un usuario sin password', function () {
-    $this->user->givePermissionTo('users.create');
-
-    Livewire::actingAs($this->user)
-        ->test('system::users.create')
-        ->set('name', 'Test User')
-        ->set('email', 'mail@mail.com')
-        ->set('auto_password', true)
-        ->call('save')
-        ->assertHasNoErrors();
-
-    $user = User::query()->where('email', 'mail@mail.com')->first();
-    $this->assertNotNull($user);
-    $this->assertNotEmpty($user->password);
-});
-
-it('un nuevo usuario puede tener uno o mas roles', function () {
-    $this->user->givePermissionTo('users.create');
+it('un usuario puede tener uno o mas roles', function () {
+    $user = User::factory()->create();
+    $this->user->givePermissionTo('users.edit');
 
     $role1 = Role::factory()->create();
     $role2 = Role::factory()->create();
 
     Livewire::actingAs($this->user)
-        ->test('system::users.create')
+        ->test('system::users.edit', ['user' => $user])
         ->set('name', 'Test User')
         ->set('email', 'mail@mail.com')
-        ->set('auto_password', true)
         ->set('selectedRolesIds', [$role1->id, $role2->id])
         ->call('save')
         ->assertHasNoErrors();
@@ -108,17 +97,17 @@ it('un nuevo usuario puede tener uno o mas roles', function () {
     $this->assertTrue($user->hasRole($role2->name));
 });
 
-it('un nuevo usuario puede tener uno o mas roles via select2', function () {
-    $this->user->givePermissionTo('users.create');
+it('un usuario puede tener uno o mas roles via select2', function () {
+    $user = User::factory()->create();
+    $this->user->givePermissionTo('users.edit');
 
     $role1 = Role::factory()->create();
     $role2 = Role::factory()->create();
 
     Livewire::actingAs($this->user)
-        ->test('system::users.create')
+        ->test('system::users.edit', ['user' => $user])
         ->set('name', 'Test User')
         ->set('email', 'mail@mail.com')
-        ->set('auto_password', true)
         ->call('selectRole', $role1->id)
         ->call('selectRole', $role2->id)
         ->call('save')
@@ -131,17 +120,31 @@ it('un nuevo usuario puede tener uno o mas roles via select2', function () {
     $this->assertTrue($user->hasRole($role2->name));
 });
 
-it('un nuevo usuario puede tener uno o mas permisos', function () {
-    $this->user->givePermissionTo('users.create');
+it('al seleccionar un rol via select2 se refleja inmediatamente en el usuario', function () {
+    $user = User::factory()->create();
+    $this->user->givePermissionTo('users.edit');
+
+    $role = Role::factory()->create();
+
+    Livewire::actingAs($this->user)
+        ->test('system::users.edit', ['user' => $user])
+        ->call('selectRole', $role->id)
+        ->assertHasNoErrors();
+
+    expect($user->fresh()->hasRole($role->name))->toBeTrue();
+});
+
+it('un usuario puede tener uno o mas permisos', function () {
+    $user = User::factory()->create();
+    $this->user->givePermissionTo('users.edit');
 
     $permission1 = Permission::factory()->create();
     $permission2 = Permission::factory()->create();
 
     Livewire::actingAs($this->user)
-        ->test('system::users.create')
+        ->test('system::users.edit', ['user' => $user])
         ->set('name', 'Test User')
         ->set('email', 'mail@mail.com')
-        ->set('auto_password', true)
         ->set('selectedPermissionsIds', [$permission1->id, $permission2->id])
         ->call('save')
         ->assertHasNoErrors();
@@ -154,16 +157,16 @@ it('un nuevo usuario puede tener uno o mas permisos', function () {
 });
 
 it('un nuevo usuario puede tener uno o mas permisos via select2', function () {
-    $this->user->givePermissionTo('users.create');
+    $user = User::factory()->create();
+    $this->user->givePermissionTo('users.edit');
 
     $permission1 = Permission::factory()->create();
     $permission2 = Permission::factory()->create();
 
     Livewire::actingAs($this->user)
-        ->test('system::users.create')
+        ->test('system::users.edit', ['user' => $user])
         ->set('name', 'Test User')
         ->set('email', 'mail@mail.com')
-        ->set('auto_password', true)
         ->call('selectPermission', $permission1->id)
         ->call('selectPermission', $permission2->id)
         ->call('save')
@@ -174,4 +177,18 @@ it('un nuevo usuario puede tener uno o mas permisos via select2', function () {
 
     $this->assertTrue($user->hasPermissionTo($permission1->name));
     $this->assertTrue($user->hasPermissionTo($permission2->name));
+});
+
+it('al seleccionar un permiso via select2 se refleja inmediatamente en el usuario', function () {
+    $user = User::factory()->create();
+    $this->user->givePermissionTo('users.edit');
+
+    $permission = Permission::factory()->create();
+
+    Livewire::actingAs($this->user)
+        ->test('system::users.edit', ['user' => $user])
+        ->call('selectPermission', $permission->id)
+        ->assertHasNoErrors();
+
+    expect($user->fresh()->hasPermissionTo($permission->name))->toBeTrue();
 });

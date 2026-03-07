@@ -7,25 +7,17 @@
     </div>
 
     <div class="flex flex-col space-y-2">
-        @if ( session()->has('success') )
-            <flux:callout variant="success">
-                {{ session()->get('success') }}
-            </flux:callout>
-        @endif
-        @if ( session()->has('danger') )
-            <flux:callout variant="danger">
-                {{ session()->get('danger') }}
-            </flux:callout>
-        @endif
+        @include('partials.flash')
 
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-2">
-                <flux:input icon="magnifying-glass" :loading="false" :clearable="true" placeholder="{{ __('system.users.search-users') }}" wire:model.live.debounce.500ms="search" class="max-w-64" />
+                <flux:input icon="magnifying-glass" :loading="false" :clearable="true" placeholder="{{ __('system.users.search-users') }}" wire:model.live.debounce.500ms="search" class="max-w-64" autocomplete="off" />
             </div>
             <div class="flex items-center space-x-2">
                 <flux:button variant="primary" color="blue" size="sm" href="{{ route('users.create') }}">{{ __('system.users.buttons.create') }}</flux:button>
             </div>
         </div>
+
         <x-tables.table>
             <x-slot name="thead">
                 <tr class="tr">
@@ -52,7 +44,7 @@
                             </div>
                         </td>
                         <td class="td text-right space-x-2">
-                            {{-- <flux:button variant="primary" color="green" size="sm" href="{{ route('users.edit', $user->id) }}">{{ __('system.users.buttons.edit') }}</flux:button>  --}}
+                            <flux:button variant="primary" color="green" size="sm" href="{{ route('users.edit', $user->id) }}">{{ __('system.users.buttons.edit') }}</flux:button>
                             <flux:button variant="danger" size="sm" wire:click="confirmDelete({{ $user->id }})">{{ __('system.users.buttons.delete') }}</flux:button>
                         </td>
                     </tr>

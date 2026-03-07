@@ -3,17 +3,17 @@
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
+use App\Traits\Select2PermissionsTrait;
 use App\Traits\Select2RolesTrait;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
 new #[Title('Crear nuevo usuario')] class extends Component
 {
+    use Select2PermissionsTrait;
     use Select2RolesTrait;
 
     public string $name = '';
@@ -26,19 +26,9 @@ new #[Title('Crear nuevo usuario')] class extends Component
 
     public string $password_confirmation = '';
 
-    public array $selectedPermissions = [];
-
     public function mount(): void
     {
-        abort_unless(auth()->user()?->can('users.create'), 403);
-    }
-
-    #[Computed()]
-    public function permissions(): Collection
-    {
-        return Permission::query()
-            ->visibleToUser()
-            ->pluck('display_name', 'id');
+        abort_unless(auth()->user()?->can('users.create'), 403, __('system.users.403.users-create'));
     }
 
     public function save(): mixed
@@ -71,10 +61,10 @@ new #[Title('Crear nuevo usuario')] class extends Component
                 $user->assignRole($roles);
             }
 
-            if (! empty($this->selectedPermissions)) {
+            if (! empty($this->selectedPermissionsIds)) {
                 $permissions = Permission::query()
                     ->visibleToUser()
-                    ->whereIn('name', $this->selectedPermissions)
+                    ->whereIn('id', $this->selectedPermissionsIds)
                     ->get();
                 $user->givePermissionTo($permissions);
             }

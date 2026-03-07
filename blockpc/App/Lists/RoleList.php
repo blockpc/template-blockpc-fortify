@@ -14,9 +14,10 @@ final class RoleList
      * - description: Descripción del role
      * - is_editable: Indica si el role es editable o no
      * - guard_name: Nombre del guard (opcional, por defecto 'web')
+     * - permissions: Lista de permisos asociados al role (opcional, por defecto [])
      * [name, display_name, description, is_editable, guard_name (opcional: 'web')]
      *
-     * @return array<int, array{name: string, display_name: string, description: string, is_editable: bool, guard_name: string}>
+     * @return array<int, array{name: string, display_name: string, description: string, is_editable: bool, guard_name: string, permissions: array<int, string>}>
      */
     public static function all(): array
     {
@@ -28,7 +29,7 @@ final class RoleList
     /**
      * Devuelve los roles por defecto del sistema.
      *
-     * @return array<int, array{name: string, display_name: string, description: string, is_editable: bool, guard_name: string}>
+     * @return array<int, array{name: string, display_name: string, description: string, is_editable: bool, guard_name: string, permissions: array<int, string>}>
      */
     private static function system(): array
     {
@@ -39,6 +40,7 @@ final class RoleList
                 'description' => 'Usuario del sistema con acceso total',
                 'is_editable' => false,
                 'guard_name' => 'web',
+                'permissions' => [],
             ],
             [
                 'name' => 'admin',
@@ -46,6 +48,7 @@ final class RoleList
                 'description' => 'Usuario del sistema con acceso general',
                 'is_editable' => true,
                 'guard_name' => 'web',
+                'permissions' => ['*'],
             ],
             [
                 'name' => 'user',
@@ -53,6 +56,11 @@ final class RoleList
                 'description' => 'Usuario por defecto del sistema',
                 'is_editable' => true,
                 'guard_name' => 'web',
+                'permissions' => [
+                    'users.index',
+                    'roles.index',
+                    'permissions.index',
+                ],
             ],
         ];
     }

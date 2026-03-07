@@ -10,12 +10,8 @@
         @include('partials.flash')
 
         <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-2">
-                <flux:input icon="magnifying-glass" :loading="false" :clearable="true" placeholder="{{ __('system.users.search-users') }}" wire:model.live.debounce.500ms="search" class="max-w-64" autocomplete="off" />
-            </div>
-            <div class="flex items-center space-x-2">
-                <flux:button variant="primary" color="blue" size="sm" href="{{ route('users.create') }}">{{ __('system.users.buttons.create') }}</flux:button>
-            </div>
+            <flux:input icon="magnifying-glass" :loading="false" :clearable="true" placeholder="{{ __('system.users.search-users') }}" wire:model.live.debounce.500ms="search" class="max-w-64" autocomplete="off" />
+            <flux:button variant="primary" color="blue" size="sm" href="{{ route('users.create') }}">{{ __('system.users.buttons.create') }}</flux:button>
         </div>
 
         <x-tables.table>
@@ -24,6 +20,7 @@
                     <th scope="col" class="td">{{ __('system.users.table.name') }}</th>
                     <th scope="col" class="td">{{ __('system.users.table.email') }}</th>
                     <th scope="col" class="td">{{ __('system.users.table.roles') }}</th>
+                    <th scope="col" class="td">{{ __('system.users.table.permissions') }}</th>
                     <th scope="col" class="td" align="end">{{ __('system.users.table.actions') }}</th>
                 </tr>
             </x-slot>
@@ -43,6 +40,10 @@
                                 @endforeach
                             </div>
                         </td>
+                        </td>
+                        <td class="td">
+                            <flux:badge size="sm" class="w-auto!">{{ $user->permissions_count }}</flux:badge>
+                        </td>
                         <td class="td text-right space-x-2">
                             <flux:button variant="primary" color="green" size="sm" href="{{ route('users.edit', $user->id) }}">{{ __('system.users.buttons.edit') }}</flux:button>
                             <flux:button variant="danger" size="sm" wire:click="confirmDelete({{ $user->id }})">{{ __('system.users.buttons.delete') }}</flux:button>
@@ -50,7 +51,7 @@
                     </tr>
                 @empty
                     <tr class="tr">
-                        <td class="td text-center" colspan="4">
+                        <td class="td text-center" colspan="5">
                             {{ __('system.users.table.no_users') }}
                         </td>
                     </tr>

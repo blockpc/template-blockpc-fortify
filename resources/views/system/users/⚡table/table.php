@@ -32,6 +32,7 @@ new #[Title('Lista de Usuarios')] class extends Component
     {
         return User::query()
             ->with('roles')
+            ->withCount(['roles', 'permissions'])
             ->visibleToUser()
             ->search($this->search)
             ->paginate($this->paginate);

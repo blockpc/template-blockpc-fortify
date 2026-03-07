@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Blockpc\App\Services;
 
 use App\Models\Role;
+use Blockpc\App\Lists\PermissionList;
 use Blockpc\App\Lists\RoleList;
 use Illuminate\Support\Collection;
 
@@ -16,13 +17,15 @@ final class RoleSynchronizerService
     {
         $missing = $this->getMissing();
         foreach ($missing as $roleData) {
-            Role::create([
+            $role = Role::create([
                 'name' => $roleData['name'],
                 'display_name' => $roleData['display_name'] ?? null,
                 'description' => $roleData['description'] ?? null,
                 'is_editable' => $roleData['is_editable'] ?? true,
                 'guard_name' => $this->resolveGuardName($roleData),
             ]);
+
+            $this->assignPermissions($role, $roleData['permissions'] ?? []);
         }
 
         $this->existingRoles = null;
@@ -105,10 +108,30 @@ final class RoleSynchronizerService
      *   is_editable?: bool,
      *   guard_name?: string,
      *   guard?: string
+     *   permissions?: array<int, string>
      * } $roleData
      */
     private function resolveGuardName(array $roleData): string
     {
         return $roleData['guard_name'] ?? $roleData['guard'] ?? 'web';
+    }
+
+    private function assignPermissions(Role $role, array $permissions): void
+    {
+        $hasWildcard = in_array('*', $permissions, true);
+
+        if (!$hasWildcard && !empty($permissions)) {
+            $role->syncPermissions($permissions);
+            return;
+        }
+
+        if ($hasWildcard) {
+            $allAvailablePermissions = collect(PermissionList::all())
+                ->filter(fn ($perm) => $perm['key'] !== 'sudo')
+                ->pluck('name')
+                ->toArray();
+
+            $role->syncPermissions($allAvailablePermissions);
+        }
     }
 }

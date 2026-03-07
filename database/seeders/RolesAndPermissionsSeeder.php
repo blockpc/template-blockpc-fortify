@@ -17,7 +17,7 @@ final class RolesAndPermissionsSeeder extends Seeder
         PermissionSynchronizerService $permissionSynchronizerService,
         RoleSynchronizerService $roleSynchronizerService
     ): void {
-        $roleSynchronizerService->sync();
         $permissionSynchronizerService->sync();
+        $roleSynchronizerService->sync();
     }
 }

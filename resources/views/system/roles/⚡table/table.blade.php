@@ -9,12 +9,8 @@
         @include('partials.flash')
 
         <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-2">
-                <flux:input icon="magnifying-glass" :loading="false" :clearable="true" placeholder="{{ __('system.roles.search-roles') }}" wire:model.live.debounce.500ms="search" class="max-w-64" />
-            </div>
-            <div class="flex items-center space-x-2">
-                <flux:button variant="primary" color="blue" size="sm" href="{{ route('roles.create') }}">{{ __('system.roles.buttons.create') }}</flux:button>
-            </div>
+            <flux:input icon="magnifying-glass" :loading="false" :clearable="true" placeholder="{{ __('system.roles.search-roles') }}" wire:model.live.debounce.500ms="search" class="max-w-64" autocomplete="off" />
+            <flux:button variant="primary" color="blue" size="sm" href="{{ route('roles.create') }}">{{ __('system.roles.buttons.create') }}</flux:button>
         </div>
 
         <x-tables.table>

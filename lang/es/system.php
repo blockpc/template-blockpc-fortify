@@ -148,6 +148,7 @@ return [
             'name' => 'Nombre',
             'email' => 'Correo electrónico',
             'roles' => 'Roles',
+            'permissions' => 'Permisos',
             'actions' => 'Acciones',
             'no_users' => 'No hay usuarios registrados.',
             'edit' => 'Editar',

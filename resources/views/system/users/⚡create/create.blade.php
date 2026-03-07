@@ -7,6 +7,8 @@
     </div>
 
     <div class="w-full">
+        @include('partials.flash')
+
         <form wire:submit.prevent="save" class="w-full space-y-6" autocomplete="off">
             <div class="w-full max-w-lg space-y-6">
                 <flux:fieldset>
@@ -22,16 +24,16 @@
                     <flux:legend>{{ __('system.users.create.passwords.title') }}</flux:legend>
                     <flux:description>{{ trans('system.users.create.passwords.description') }}</flux:description>
 
-                    <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-4 mb-4">
                         <div>{{ __('system.users.create.passwords.auto_generate_label') }}</div>
                         <x-toggle name="create_password_user" wire:model.live="auto_password" />
                     </div>
 
-                    @if (!$auto_password)
-                    <flux:input wire:model="password" :label="__('system.users.create.form.password')" type="password" required autocomplete="off" viewable />
+                    <div wire:key="manual-password-fields" @class(['space-y-4', 'hidden' => $auto_password])>
+                        <flux:input wire:model="password" :label="__('system.users.create.form.password')" type="password" autocomplete="off" viewable :disabled="$auto_password" />
 
-                    <flux:input wire:model="password_confirmation" :label="__('system.users.create.form.password_confirmation')" type="password" required autocomplete="off" viewable />
-                    @endif
+                        <flux:input wire:model="password_confirmation" :label="__('system.users.create.form.password_confirmation')" type="password" autocomplete="off" viewable :disabled="$auto_password" />
+                    </div>
                 </flux:fieldset>
 
                 <flux:fieldset>
@@ -47,6 +49,15 @@
                             search="searchRole"
                             click="selectRole"
                         />
+                    </div>
+
+                    <div class="mt-2">
+                        @foreach ($selectedRolesNames as $roleId => $roleName)
+                            <flux:badge size="sm" class="flex items-center space-x-1 w-auto!">
+                                <div>{{ $roleName }}</div>
+                                <flux:button variant="ghost" size="xs" icon="x-mark" wire:click="deleteRoleId({{ $roleId }})" />
+                            </flux:badge>
+                        @endforeach
                     </div>
                 </flux:fieldset>
 
@@ -64,21 +75,30 @@
                             click="selectPermission"
                         />
                     </div>
+
+                    <div class="mt-2">
+                        @foreach ($selectedPermissionsNames as $permissionId => $permissionName)
+                            <flux:badge size="sm" class="flex items-center space-x-1 w-auto!">
+                                <div>{{ $permissionName }}</div>
+                                <flux:button variant="ghost" size="xs" icon="x-mark" wire:click="deletePermissionId({{ $permissionId }})" />
+                            </flux:badge>
+                        @endforeach
+                    </div>
                 </flux:fieldset>
-            </div>
 
-            <flux:separator variant="subtle" class="my-4" />
+                <flux:separator variant="subtle" class="my-4" />
 
-            <div class="flex items-center justify-between">
-                <div>
-                    <flux:button variant="subtle" href="{{ route('users.table') }}" class="w-full">
-                        {{ __('system.users.back_to_table') }}
-                    </flux:button>
-                </div>
-                <div class="flex items-center justify-end">
-                    <flux:button variant="primary" type="submit" color="blue" class="w-full" data-test="create-user-button">
-                        {{ __('system.users.create.save') }}
-                    </flux:button>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <flux:button variant="subtle" href="{{ route('users.table') }}" class="w-full">
+                            {{ __('system.users.back_to_table') }}
+                        </flux:button>
+                    </div>
+                    <div class="flex items-center justify-end">
+                        <flux:button variant="primary" type="submit" color="blue" class="w-full" data-test="create-user-button">
+                            {{ __('system.users.create.save') }}
+                        </flux:button>
+                    </div>
                 </div>
             </div>
         </form>

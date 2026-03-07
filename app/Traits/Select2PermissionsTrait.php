@@ -12,6 +12,8 @@ trait Select2PermissionsTrait
 {
     public array $selectedPermissionsIds = [];
 
+    public array $selectedPermissionsNames = [];
+
     public string $searchPermission = '';
 
     #[Computed()]
@@ -37,6 +39,11 @@ trait Select2PermissionsTrait
         }
 
         if (! isset($this->user)) {
+            $this->selectedPermissionsNames = Permission::query()
+                ->whereIn('id', $this->selectedPermissionsIds)
+                ->pluck('display_name', 'id')
+                ->toArray();
+
             return;
         }
 
@@ -46,7 +53,7 @@ trait Select2PermissionsTrait
             $this->user->permissions()->syncWithoutDetaching([$permissionId]);
         }
 
-        $this->user->load('permissions');
+        $this->user->loadMissing('permissions');
     }
 
     public function loadPermissionsIds(): void
@@ -57,8 +64,15 @@ trait Select2PermissionsTrait
     public function deletePermissionId(int|string $permissionId): void
     {
         $permissionId = (int) $permissionId;
-        $this->user->permissions()->detach($permissionId);
         $this->selectedPermissionsIds = array_values(array_diff($this->selectedPermissionsIds, [$permissionId]));
-        $this->user->load('permissions');
+
+        if (! isset($this->user)) {
+            unset($this->selectedPermissionsNames[$permissionId]);
+
+            return;
+        }
+
+        $this->user->permissions()->detach($permissionId);
+        $this->user->loadMissing('permissions');
     }
 }

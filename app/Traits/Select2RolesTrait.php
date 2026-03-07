@@ -12,6 +12,8 @@ trait Select2RolesTrait
 {
     public array $selectedRolesIds = [];
 
+    public array $selectedRolesNames = [];
+
     public string $searchRole = '';
 
     #[Computed()]
@@ -37,18 +39,23 @@ trait Select2RolesTrait
         }
 
         if (! isset($this->user)) {
+            $this->selectedRolesNames = Role::query()
+                ->whereIn('id', $this->selectedRolesIds)
+                ->pluck('display_name', 'id')
+                ->toArray();
+
             return;
         }
 
         if ($isSelected) {
             $this->user->roles()->detach($roleId);
-            $this->user->load('roles');
+            $this->user->loadMissing('roles');
 
             return;
         }
 
         $this->user->roles()->syncWithoutDetaching([$roleId]);
-        $this->user->load('roles');
+        $this->user->loadMissing('roles');
     }
 
     public function loadRolesIds(): void
@@ -59,8 +66,15 @@ trait Select2RolesTrait
     public function deleteRoleId(int|string $roleId): void
     {
         $roleId = (int) $roleId;
-        $this->user->roles()->detach($roleId);
         $this->selectedRolesIds = array_values(array_diff($this->selectedRolesIds, [$roleId]));
-        $this->user->load('roles');
+
+        if (! isset($this->user)) {
+            unset($this->selectedRolesNames[$roleId]);
+
+            return;
+        }
+
+        $this->user->roles()->detach($roleId);
+        $this->user->loadMissing('roles');
     }
 }

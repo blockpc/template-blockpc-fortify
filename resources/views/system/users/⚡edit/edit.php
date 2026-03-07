@@ -7,9 +7,10 @@ use App\Traits\Select2PermissionsTrait;
 use App\Traits\Select2RolesTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new class extends Component
+new #[Title('Editar usuario')] class extends Component
 {
     use Select2PermissionsTrait;
     use Select2RolesTrait;

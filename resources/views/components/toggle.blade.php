@@ -16,5 +16,3 @@
         <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap" x-show="!toggle" x-cloak>{{__($texto ?? $not)}}</span>
     </label>
 </div>
-    </label>
-</div>

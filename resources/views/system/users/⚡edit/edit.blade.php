@@ -78,20 +78,20 @@
                         @endforeach
                     </div>
                 </flux:fieldset>
-            </div>
 
-            <flux:separator variant="subtle" class="my-4" />
+                <flux:separator variant="subtle" class="my-4" />
 
-            <div class="flex items-center justify-between">
-                <div>
-                    <flux:button variant="subtle" href="{{ route('users.table') }}" class="w-full">
-                        {{ __('system.users.back_to_table') }}
-                    </flux:button>
-                </div>
-                <div class="flex items-center justify-end">
-                    <flux:button variant="primary" type="submit" color="green" class="w-full" data-test="edit-user-button">
-                        {{ __('system.users.edit.save') }}
-                    </flux:button>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <flux:button variant="subtle" href="{{ route('users.table') }}" class="w-full">
+                            {{ __('system.users.back_to_table') }}
+                        </flux:button>
+                    </div>
+                    <div class="flex items-center justify-end">
+                        <flux:button variant="primary" type="submit" color="green" class="w-full" data-test="edit-user-button">
+                            {{ __('system.users.edit.save') }}
+                        </flux:button>
+                    </div>
                 </div>
             </div>
         </form>

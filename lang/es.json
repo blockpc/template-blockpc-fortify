@@ -88,5 +88,17 @@
     "Are you sure you want to delete your account?": "¿Seguro que quieres eliminar tu cuenta?",
     "Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.": "Una vez que tu cuenta sea eliminada, todos sus recursos y datos serán eliminados permanentemente. Por favor, ingresa tu contraseña para confirmar que deseas eliminar permanentemente tu cuenta.",
     "Two-Factor Auth": "Autenticación de Dos Factores",
-    "Something went wrong. Try again or contact support.": "Algo salió mal. Inténtalo de nuevo o contacta al soporte."
+    "Something went wrong. Try again or contact support.": "Algo salió mal. Inténtalo de nuevo o contacta al soporte.",
+    "Hello!": "¡Hola!",
+    "You are receiving this email because a new user account has been created for you.": "Estás recibiendo este correo electrónico porque se ha creado una nueva cuenta de usuario para ti.",
+    "If you did not create an account, no further action is required.": "Si no creaste una cuenta, no se requiere ninguna acción adicional.",
+    "Regards,": "Saludos,",
+    "All rights reserved.": "Todos los derechos reservados.",
+    "If you’re having trouble clicking the \":actionText\" button, copy and paste the URL below into your web browser:": "Si tienes problemas para hacer clic en el botón \":actionText\", copia y pega la URL a continuación en tu navegador web:",
+    "Reset Password": "Restablecer Contraseña",
+    "Verify Email Address": "Verificar Dirección de Correo",
+    "New User Created": "Nuevo Usuario Creado",
+    "Welcome to :name!": "¡Bienvenido a :name!",
+    "Please click the button below to verify your email address.": "Por favor, haz clic en el botón a continuación para verificar tu dirección de correo electrónico.",
+    "verified": "Verificado"
 }

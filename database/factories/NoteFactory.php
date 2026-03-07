@@ -14,7 +14,7 @@ final class NoteFactory extends Factory
     {
         return [
             'title' => $this->faker->unique()->sentence(),
-            'content' => $this->faker->paragraph(),
+            'content' => $this->faker->text(200),
             'author_id' => \App\Models\User::factory(),
         ];
     }

@@ -22,7 +22,7 @@ final class PermissionFactory extends Factory
         return [
             'name' => $this->faker->unique()->word(),
             'display_name' => $this->faker->sentence(),
-            'description' => $this->faker->paragraph(),
+            'description' => $this->faker->text(200),
             'key' => $this->faker->unique()->slug(2),
             'guard_name' => 'web',
         ];

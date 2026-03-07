@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Mail\NewUserCreatedMail;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Database\Seeders\RolesAndPermissionsSeeder;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 
 uses()->group('users', 'system');
@@ -174,4 +178,37 @@ it('un nuevo usuario puede tener uno o mas permisos via select2', function () {
 
     $this->assertTrue($user->hasPermissionTo($permission1->name));
     $this->assertTrue($user->hasPermissionTo($permission2->name));
+});
+
+it('verificar que un correo de bienvenida es enviado', function () {
+    Mail::fake();
+    $this->user->givePermissionTo('users.create');
+
+    Livewire::actingAs($this->user)
+        ->test('system::users.create')
+        ->set('name', 'Test User')
+        ->set('email', 'mail@mail.com')
+        ->set('auto_password', true)
+        ->call('save')
+        ->assertHasNoErrors();
+
+    Mail::assertSent(NewUserCreatedMail::class, function ($mail) {
+        return $mail->hasTo('mail@mail.com');
+    });
+});
+
+it('no envía correo de bienvenida cuando send_email es false', function () {
+    Mail::fake();
+    $this->user->givePermissionTo('users.create');
+
+    Livewire::actingAs($this->user)
+        ->test('system::users.create')
+        ->set('name', 'Test User')
+        ->set('email', 'mail@mail.com')
+        ->set('auto_password', true)
+        ->set('send_email', false)
+        ->call('save')
+        ->assertHasNoErrors();
+
+    Mail::assertNotSent(NewUserCreatedMail::class);
 });

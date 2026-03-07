@@ -65,3 +65,21 @@ test('already verified user visiting verification link is redirected without fir
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
     Event::assertNotDispatched(Verified::class);
 });
+
+test('guest can verify email from invitation signed link', function () {
+    $user = User::factory()->unverified()->create();
+
+    Event::fake();
+
+    $verificationUrl = URL::temporarySignedRoute(
+        'verification.invitation.verify',
+        now()->addMinutes(60),
+        ['id' => $user->id, 'hash' => sha1($user->email)]
+    );
+
+    $this->get($verificationUrl)
+        ->assertRedirect(route('login'));
+
+    expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
+    Event::assertDispatched(Verified::class);
+});

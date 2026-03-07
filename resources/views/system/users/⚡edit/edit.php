@@ -68,7 +68,7 @@ new #[Title('Editar usuario')] class extends Component
             $this->user->syncPermissions($permissions);
         });
 
-        session()->flash('success', __('system.users.edit.success_message'));
+        session()->flash('success', __('system.users.edit.success_message', ['name' => $this->user->name]));
 
         return redirect()->route('users.table');
     }

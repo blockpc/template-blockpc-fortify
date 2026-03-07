@@ -138,6 +138,7 @@ return [
             'users-create' => 'No tienes permiso para crear usuarios.',
             'users-edit' => 'No tienes permiso para editar usuarios.',
             'users-delete' => 'No tienes permiso para eliminar usuarios.',
+            'invalid-verification-link' => 'El enlace de verificación no es válido.',
         ],
         'buttons' => [
             'create' => 'Crear nuevo usuario',
@@ -213,7 +214,9 @@ return [
                 'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
                 'password.confirmed' => 'La confirmación de la contraseña no coincide.',
             ],
-            'success_message' => 'El usuario se ha creado exitosamente.',
+            'success_message' => 'El usuario \':name\' se ha creado exitosamente.',
+            'creation_error_message' => 'El usuario no pudo ser creado. Comunicate con el administrador.',
+            'email_error_message' => 'El usuario se ha creado, pero no se pudo enviar el correo de notificación.',
         ],
         'edit' => [
             'title' => 'Editar usuario',
@@ -261,7 +264,18 @@ return [
                 'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
                 'password.confirmed' => 'La confirmación de la contraseña no coincide.',
             ],
-            'success_message' => 'El usuario se ha actualizado exitosamente.',
+            'success_message' => 'El usuario \':name\' se ha actualizado exitosamente.',
+        ],
+        'mails' => [
+            'new_user_created_subject' => '¡Bienvenido a :name!',
+            'new_user_created_message' => 'Tu cuenta ha sido creada exitosamente. Puedes iniciar sesión utilizando el siguiente enlace:',
+            'new_user_verify_message' => 'Antes de iniciar sesión, verifica tu correo electrónico con el siguiente enlace:',
+            'new_user_verify_button' => 'Verificar correo electrónico',
+            'new_user_created_login_button' => 'Iniciar sesión',
+            'new_user_change_password' => 'Cambiar Contraseña',
+            'new_user_created_recommendation' => 'Te recomendamos cambiar tu contraseña antes de iniciar sesión por primera vez.',
+            'new_user_created_farewell' => '¡Gracias por unirte a nosotros!',
+            'new_user_created_signature' => 'El equipo de :app',
         ],
     ],
 ];

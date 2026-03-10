@@ -100,5 +100,12 @@
     "New User Created": "Nuevo Usuario Creado",
     "Welcome to :name!": "¡Bienvenido a :name!",
     "Please click the button below to verify your email address.": "Por favor, haz clic en el botón a continuación para verificar tu dirección de correo electrónico.",
-    "verified": "Verificado"
+    "verified": "Verificado",
+    "send": "Enviar",
+    "read": "Leída",
+    "mark as read": "Marcar como leída",
+    "mark all as read": "Marcar todas como leídas",
+    "no notifications": "No tienes notificaciones.",
+    "view all": "Ver todas las notificaciones",
+    "select user": "Seleccionar usuario"
 }

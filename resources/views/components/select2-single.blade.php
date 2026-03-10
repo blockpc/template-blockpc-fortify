@@ -3,11 +3,12 @@
     'title',
     'options',
     'empty_values' => 'Sin registros encontrados',
-    'selected_ids' => [],
+    'selected_id' => null,
+    'selected_name' => null,
     'search_by' => 'Buscar...'
 ])
 
-<div {{ $attributes->only('class')->merge(['class' => 'flex flex-col text-xs font-semibold']) }} id="{{ $name }}-select2-multiple">
+<div {{ $attributes->only('class')->merge(['class' => 'flex flex-col text-xs font-semibold']) }} id="{{ $name }}-select2-single">
     <div
         class="w-full relative"
         x-data="{
@@ -53,7 +54,7 @@
                 class="inline-flex items-center px-2 py-1 text-xs whitespace-nowrap font-semibold uppercase btn-select justify-between w-full bg-transparent border rounded border-gray-500 p-2 h-8"
                 x-on:click="toggle()"
             >
-                <span>{{ __($title) }}</span>
+                <span>{{ __($selected_name ?: $title) }}</span>
                 <div :class="open ? 'rotate-180' : ''">
                     <flux:icon.chevron-down class="size-4" />
                 </div>
@@ -69,9 +70,10 @@
             x-show="open"
             x-cloak
         >
-            <ul role="listbox" class="list-reset p-2 max-h-40 text-sm scrollbar-thin scrollbar-thumb-zinc-400 scrollbar-track-zinc-300 overflow-y-auto">
+            <ul role="listbox" class="list-reset p-2 max-h-40 text-sm scrollbar-thin scrollbar-thumb-zinc-400 scrollbar-track-zinc-300 overflow-y-auto space-y-1">
                 <li class="sticky top-0 bg-zinc-100 dark:bg-zinc-700 mb-2">
                     <flux:input
+                        size="sm"
                         icon="magnifying-glass"
                         :loading="false"
                         :clearable="true"
@@ -83,17 +85,17 @@
                 @forelse ($options as $option_id => $option_name)
                     <li
                         @class([
-                            'bg-zinc-300 dark:bg-zinc-800/50' => in_array($option_id, $selected_ids)
+                            'bg-zinc-300 dark:bg-zinc-800/50' => $option_id === $selected_id
                         ])
                         id="option-{{ $option_id }}"
                         wire:click="{{ $attributes->get('click') }}({{ $option_id }})"
                         x-on:click="open = false"
                         role="option"
-                        :aria-selected="{{ in_array($option_id, $selected_ids) ? 'true' : 'false' }}"
+                        :aria-selected="{{ $option_id === $selected_id ? 'true' : 'false' }}"
                     >
                         <div class="p-2 w-full hover:bg-zinc-300 hover:dark:bg-zinc-600 flex justify-between cursor-pointer text-xs">
                             <span>{{ $option_name }}</span>
-                            @if (in_array($option_id, $selected_ids))
+                            @if ($option_id === $selected_id)
                                 <flux:icon.check class="w-4 h-4" />
                             @endif
                         </div>

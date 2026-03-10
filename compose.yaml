@@ -1,6 +1,7 @@
+name: template_blockpc_fortify
 services:
     laravel.test:
-        container_name: blog
+        container_name: template
         build:
             context: ./vendor/laravel/sail/runtimes/8.5
             dockerfile: Dockerfile
@@ -24,8 +25,10 @@ services:
         networks:
             - sail
         depends_on:
-            - mariadb
-            - mailpit
+            mariadb:
+                condition: service_healthy
+            mailpit:
+                condition: service_started
     mariadb:
         container_name: mariadb
         image: 'mariadb:11'
@@ -75,9 +78,38 @@ services:
             - sail
         depends_on:
         - mariadb
+    reverb:
+        container_name: reverb
+        build:
+            context: ./vendor/laravel/sail/runtimes/8.5
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+                MYSQL_CLIENT: mariadb-client
+        image: sail-8.5/app
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        ports:
+            - '${REVERB_FORWARD_PORT:-8081}:8080'
+        command: 'php artisan reverb:start --host=0.0.0.0 --port=8080'
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
+            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+            IGNITION_LOCAL_SITES_PATH: '${PWD}'
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - sail
+        depends_on:
+            mariadb:
+                condition: service_healthy
 networks:
     sail:
+        name: sail_network
         driver: bridge
 volumes:
     sail-mariadb:
+        name: template_blockpc_mariadb_data
         driver: local

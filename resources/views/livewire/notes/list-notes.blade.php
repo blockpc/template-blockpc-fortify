@@ -1,16 +1,16 @@
 <div>
-    <div class="p-6 space-y-4">
+    <div class="w-full space-y-4">
         <div class="flex items-center justify-between">
             <h1 class="text-xl font-semibold">{{ __('Notes') }}</h1>
 
             {{-- Botón: abrir modal crear (Flux) --}}
-            <flux:button variant="primary" color="blue" wire:click="$set('createOpen', true)">{{ __('New Note') }}</flux:button>
+            <flux:button variant="primary" color="blue" wire:click="$set('createOpen', true)" size="sm">{{ __('New Note') }}</flux:button>
         </div>
 
         <div class="space-y-2">
             <div class="flex items-center justify-between">
                 <div class="">
-                    <flux:input icon="magnifying-glass" :loading="false" :clearable="true" placeholder="{{ __('Search notes...') }}" wire:model.live.debounce.500ms="search" class="max-w-md w-full" />
+                    <flux:input icon="magnifying-glass" :loading="false" :clearable="true" placeholder="{{ __('Search notes...') }}" wire:model.live.debounce.500ms="search" class="max-w-md w-full" size="sm" />
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -30,7 +30,7 @@
                         </div>
                     </flux:card>
                 @empty
-                    <p class="col-span-full text-sm text-neutral-600 dark:text-neutral-400">{{ __('No notes found.') }}</p>
+                    <p class="mt-4 p-4 col-span-full text-sm text-neutral-600 dark:text-neutral-400">{{ __('No notes found.') }}</p>
                 @endforelse
             </div>
             <div>

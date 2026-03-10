@@ -278,4 +278,22 @@ return [
             'new_user_created_signature' => 'El equipo de :app',
         ],
     ],
+    'notifications' => [
+        'menu' => 'Notificaciones',
+        'from' => 'De',
+        'title' => 'Notificaciones de Usuario',
+        'title_label' => 'Titulo',
+        'title_placeholder' => 'Titulo del mensaje',
+        'content_label' => 'Contenido',
+        'content_placeholder' => 'Contenido de la notificación',
+        'counter' => '{0} No tienes notificaciones|{1} Tienes 1 notificación|[2,*] Tienes :count notificaciones',
+        'description' => 'Administra las notificaciones que recibes en el sistema.',
+        'mark_all_as_read' => 'Marcar todas como leídas',
+        'no_notifications' => 'No tienes notificaciones.',
+        'view_all' => 'Ver todas las notificaciones',
+        'select_user' => 'Seleccionar usuario',
+        'max_64_characters' => 'Máximo 64 caracteres.',
+        'max_255_characters' => 'Máximo 255 caracteres.',
+        'send_notification_to_user' => 'Enviar notificación a usuario',
+    ]
 ];

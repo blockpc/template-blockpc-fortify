@@ -86,4 +86,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return $query->whereLike(['name', 'email'], $search);
     }
+
+    #[Scope]
+    public function notCurrentUser(Builder $query): Builder
+    {
+        if (! auth()->check()) {
+            return $query;
+        }
+
+        return $query->where('id', '!=', auth()->id());
+    }
 }

@@ -286,6 +286,9 @@ return [
         'title_placeholder' => 'Titulo del mensaje',
         'content_label' => 'Contenido',
         'content_placeholder' => 'Contenido de la notificación',
+        'notifications_all' => 'Todas las notificaciones',
+        'notifications_unread' => 'Notificaciones no leídas',
+        'notifications_read' => 'Notificaciones leídas',
         'counter' => '{0} No tienes notificaciones|{1} Tienes 1 notificación|[2,*] Tienes :count notificaciones',
         'description' => 'Administra las notificaciones que recibes en el sistema.',
         'mark_all_as_read' => 'Marcar todas como leídas',
@@ -295,5 +298,8 @@ return [
         'max_64_characters' => 'Máximo 64 caracteres.',
         'max_255_characters' => 'Máximo 255 caracteres.',
         'send_notification_to_user' => 'Enviar notificación a usuario',
+        'mark_as_read' => 'Marcar como leída',
+        'mark_as_unread' => 'Marcar como no leída',
+        'read_at :date' => 'Leída el :date',
     ]
 ];

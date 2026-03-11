@@ -23,7 +23,31 @@
             <div class="space-y-3 overflow-y-auto">
                 @forelse ($notifications as $notification)
                     <div class="rounded-lg border p-3 opacity-70">
+                        <div class="flex flex-col gap-2">
                         <div class="flex items-start justify-between gap-2">
+                            <div class="grid gap-1">
+                                <p class="text-sm font-semibold">
+                                    {{ $notification->data['title'] }}
+                                </p>
+                                <p class="p-2 text-xs italic text-zinc-600 dark:text-zinc-300">
+                                    {!! nl2br(e($notification->data['content'])) !!}
+                                </p>
+                            </div>
+                            <flux:spacer />
+                            <flux:button type="button" wire:click="markAsRead('{{ $notification->id }}')" variant="ghost" size="xs">
+                                {{ __('mark as read') }}
+                            </flux:button>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm font-semibold">
+                                {{ __('system.notifications.from') }}: {{ $notification->data['author'] }}
+                            </div>
+                            <div class="text-xs font-semibold">
+                                {{ $notification->data['sent_at'] }}
+                            </div>
+                        </div>
+                    </div>
+                        {{-- <div class="flex items-start justify-between gap-2">
                             <div class="grid gap-1">
                                 <p class="text-sm font-semibold">
                                     {{ $notification->data['title'] }}
@@ -42,7 +66,7 @@
                             <button type="button" wire:click="markAsRead('{{ $notification->id }}')" class="text-xs underline  hover:no-underline">
                                 {{ __('mark as read') }}
                             </button>
-                        </div>
+                        </div> --}}
                     </div>
                 @empty
                     <div class="rounded-lg border border-dashed p-4 text-sm text-zinc-500">
@@ -53,10 +77,10 @@
         </div>
         <div class="top-full sticky mt-2">
             <div class="flex items-center justify-between gap-2">
-                <flux:button variant="ghost" size="xs">
+                <flux:button variant="ghost" size="xs" wire:click="markAllAsRead">
                     {{ __('system.notifications.mark_all_as_read') }}
                 </flux:button>
-                <flux:button variant="ghost" size="xs">
+                <flux:button variant="ghost" :href="route('notifications.table')" size="xs">
                     {{ __('system.notifications.view_all') }}
                 </flux:button>
             </div>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Notes\ListNotes;
+use App\Livewire\Notifications\Table;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
@@ -32,6 +33,7 @@ Route::prefix('sistema')
     ->group(function () {
         Route::view('dashboard', 'dashboard')->name('dashboard');
         Route::get('lista-de-notas', ListNotes::class)->name('notes.index');
+        Route::get('mis-notificaciones', Table::class)->name('notifications.table');
 
         Route::prefix('permisos')->group(function () {
             Route::livewire('/lista-de-permisos', 'system::permission.table')->name('permissions.table');

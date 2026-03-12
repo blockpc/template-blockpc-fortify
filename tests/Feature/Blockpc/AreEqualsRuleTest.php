@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Validator;
 
 uses()->group('blockpc', 'rules');
 
-it('la regla se cumple cuando los valores son iguales', function () {
+it('the rule passes when values are equal', function () {
     $validator = Validator::make(
         ['name' => 'test'],
         ['name' => [new AreEqualsRule('test')]],
@@ -14,7 +14,7 @@ it('la regla se cumple cuando los valores son iguales', function () {
     expect($validator->fails())->toBeFalse();
 });
 
-it('la regla falla cuando los valores son diferentes', function () {
+it('the rule fails when values differ', function () {
     $validator = Validator::make(
         ['name' => 'other'],
         ['name' => [new AreEqualsRule('test')]],
@@ -24,7 +24,7 @@ it('la regla falla cuando los valores son diferentes', function () {
     expect($validator->errors()->first('name'))->toBe('The name is not equal to value.');
 });
 
-it('la regla falla cuando el texto de comparacion es null', function () {
+it('the rule fails when comparison text is null', function () {
     $validator = Validator::make(
         ['name' => 'test'],
         ['name' => [new AreEqualsRule(null)]],

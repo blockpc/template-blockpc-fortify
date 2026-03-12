@@ -53,7 +53,7 @@ trait Select2PermissionsTrait
             $this->user->permissions()->syncWithoutDetaching([$permissionId]);
         }
 
-        $this->user->loadMissing('permissions');
+        $this->user->load('permissions');
     }
 
     public function loadPermissionsIds(): void
@@ -73,6 +73,6 @@ trait Select2PermissionsTrait
         }
 
         $this->user->permissions()->detach($permissionId);
-        $this->user->loadMissing('permissions');
+        $this->user->load('permissions');
     }
 }

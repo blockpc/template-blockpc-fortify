@@ -13,7 +13,7 @@
             <div class="w-full max-w-lg space-y-6">
                 <flux:fieldset>
                     <flux:legend>{{ __('system.users.edit.general.title') }}</flux:legend>
-                    <flux:description>{{ trans('system.users.edit.general.description') }}</flux:description>
+                    <flux:description>{{ __('system.users.edit.general.description') }}</flux:description>
 
                     <flux:input wire:model="name" :label="__('system.users.edit.form.name')" type="text" required autofocus autocomplete="off" />
 
@@ -22,7 +22,7 @@
 
                 <flux:fieldset>
                     <flux:legend>{{ __('system.users.edit.passwords.title') }}</flux:legend>
-                    <flux:description>{{ trans('system.users.edit.passwords.description') }}</flux:description>
+                    <flux:description>{{ __('system.users.edit.passwords.description') }}</flux:description>
 
                     <flux:input wire:model="password" :label="__('system.users.edit.form.password')" type="password" autocomplete="off" viewable />
 
@@ -31,7 +31,7 @@
 
                 <flux:fieldset>
                     <flux:legend>{{ __('system.users.edit.roles.title') }}</flux:legend>
-                    <flux:description>{{ trans('system.users.edit.roles.description') }}</flux:description>
+                    <flux:description>{{ __('system.users.edit.roles.description') }}</flux:description>
 
                     <div>
                         <x-select2-multiple

@@ -22,7 +22,6 @@ return [
         ],
         'edit' => [
             'title' => 'Editar permiso',
-            'description' => 'Modifica los detalles del permiso.',
             'display_name' => 'Nombre',
             'description' => 'Descripción',
             'save' => 'Guardar cambios',
@@ -300,6 +299,6 @@ return [
         'send_notification_to_user' => 'Enviar notificación a usuario',
         'mark_as_read' => 'Marcar como leída',
         'mark_as_unread' => 'Marcar como no leída',
-        'read_at :date' => 'Leída el :date',
-    ]
+        'read_at' => 'Leída el :date',
+    ],
 ];

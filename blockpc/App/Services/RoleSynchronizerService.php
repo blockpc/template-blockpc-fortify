@@ -13,6 +13,12 @@ final class RoleSynchronizerService
 {
     private ?Collection $existingRoles = null;
 
+    /**
+     * Synchronize only missing roles from RoleList.
+     *
+     * Existing roles are intentionally not updated to preserve
+     * user-managed changes made via UI or API.
+     */
     public function sync(): void
     {
         $missing = $this->getMissing();
@@ -107,8 +113,8 @@ final class RoleSynchronizerService
      *   description?: string,
      *   is_editable?: bool,
      *   guard_name?: string,
-     *   guard?: string
-     *   permissions?: array<int, string>
+     *   guard?: string,
+     *   permissions: array<int, string>
      * } $roleData
      */
     private function resolveGuardName(array $roleData): string
@@ -116,12 +122,20 @@ final class RoleSynchronizerService
         return $roleData['guard_name'] ?? $roleData['guard'] ?? 'web';
     }
 
+    /**
+     * Assign permissions only when creating missing roles.
+     *
+     * Existing roles are not synchronized by design.
+     *
+     * @param  array<int, string>  $permissions
+     */
     private function assignPermissions(Role $role, array $permissions): void
     {
         $hasWildcard = in_array('*', $permissions, true);
 
-        if (!$hasWildcard && !empty($permissions)) {
+        if (! $hasWildcard && ! empty($permissions)) {
             $role->syncPermissions($permissions);
+
             return;
         }
 

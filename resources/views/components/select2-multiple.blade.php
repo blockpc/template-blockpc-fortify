@@ -69,7 +69,7 @@
             x-show="open"
             x-cloak
         >
-            <ul role="listbox" class="list-reset p-2 max-h-40 text-sm scrollbar-thin scrollbar-thumb-zinc-400 scrollbar-track-zinc-300 overflow-y-auto">
+            <ul role="listbox" aria-multiselectable="true" class="list-reset p-2 max-h-40 text-sm scrollbar-thin scrollbar-thumb-zinc-400 scrollbar-track-zinc-300 overflow-y-auto">
                 <li class="sticky top-0 bg-zinc-100 dark:bg-zinc-700 mb-2">
                     <flux:input
                         icon="magnifying-glass"
@@ -86,9 +86,14 @@
                             'bg-zinc-300 dark:bg-zinc-800/50' => in_array($option_id, $selected_ids)
                         ])
                         id="option-{{ $option_id }}"
-                        wire:click="{{ $attributes->get('click') }}({{ $option_id }})"
+                        wire:click="{{ $attributes->get('click') }}({{ json_encode($option_id) }})"
                         x-on:click="open = false"
+                        x-on:keydown.enter.prevent="$wire.{{ $attributes->get('click') }}({{ json_encode($option_id) }}); open = false"
+                        x-on:keydown.space.prevent="$wire.{{ $attributes->get('click') }}({{ json_encode($option_id) }}); open = false"
+                        x-on:keydown.arrow-down.prevent="let next = $el.nextElementSibling; while (next && !next.id.startsWith('option-')) { next = next.nextElementSibling; } if (next) { next.focus(); }"
+                        x-on:keydown.arrow-up.prevent="let previous = $el.previousElementSibling; while (previous && !previous.id.startsWith('option-')) { previous = previous.previousElementSibling; } if (previous) { previous.focus(); }"
                         role="option"
+                        tabindex="0"
                         :aria-selected="{{ in_array($option_id, $selected_ids) ? 'true' : 'false' }}"
                     >
                         <div class="p-2 w-full hover:bg-zinc-300 hover:dark:bg-zinc-600 flex justify-between cursor-pointer text-xs">

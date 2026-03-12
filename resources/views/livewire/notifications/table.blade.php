@@ -37,7 +37,7 @@
                                         {{ __('system.notifications.mark_as_read') }}
                                     </flux:button>
                                 @else
-                                    <span class="text-xs italic pointer-none">
+                                    <span class="text-xs italic">
                                         {{  __('system.notifications.read_at', ['date' => $notification->read_at->format('d/m/Y H:i')]) }}
                                     </span>
                                 @endif

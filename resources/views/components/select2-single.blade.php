@@ -88,9 +88,14 @@
                             'bg-zinc-300 dark:bg-zinc-800/50' => $option_id === $selected_id
                         ])
                         id="option-{{ $option_id }}"
-                        wire:click="{{ $attributes->get('click') }}({{ $option_id }})"
+                        wire:click="{{ $attributes->get('click') }}({{ json_encode($option_id) }})"
                         x-on:click="open = false"
+                        x-on:keydown.enter.prevent="$wire.{{ $attributes->get('click') }}({{ json_encode($option_id) }}); open = false"
+                        x-on:keydown.space.prevent="$wire.{{ $attributes->get('click') }}({{ json_encode($option_id) }}); open = false"
+                        x-on:keydown.arrow-down.prevent="let next = $el.nextElementSibling; while (next && !next.id.startsWith('option-')) { next = next.nextElementSibling; } if (next) { next.focus(); }"
+                        x-on:keydown.arrow-up.prevent="let previous = $el.previousElementSibling; while (previous && !previous.id.startsWith('option-')) { previous = previous.previousElementSibling; } if (previous) { previous.focus(); }"
                         role="option"
+                        tabindex="0"
                         :aria-selected="{{ $option_id === $selected_id ? 'true' : 'false' }}"
                     >
                         <div class="p-2 w-full hover:bg-zinc-300 hover:dark:bg-zinc-600 flex justify-between cursor-pointer text-xs">

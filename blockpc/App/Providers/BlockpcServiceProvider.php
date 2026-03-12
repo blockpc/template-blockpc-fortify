@@ -9,7 +9,6 @@ use Blockpc\App\Commands\SyncPermissionsCommand;
 use Blockpc\App\Commands\SyncRolesCommand;
 use Blockpc\App\Mixins\Search;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -35,9 +34,7 @@ class BlockpcServiceProvider extends ServiceProvider
     {
         $this->registerConsoleCommands();
 
-        DB::listen(function ($query) {
-            $this->sqlWatch($query);
-        });
+        $this->sqlWatch();
     }
 
     /**
@@ -57,27 +54,45 @@ class BlockpcServiceProvider extends ServiceProvider
     /**
      * Log slow SQL queries matching the watched URL pattern.
      */
-    private function sqlWatch(QueryExecuted $query): void
+    private function sqlWatch(): void
     {
-        if ($query->time < 200) {
+        if (! $this->app->environment('local') && ! Cache::has('sql_watch_url_pattern')) {
             return;
         }
 
-        $pattern = Cache::get('sql_watch_url_pattern');
-        if (! $pattern) {
-            return;
-        }
+        DB::listen(function ($query) {
+            if ($query->time < 200) {
+                return;
+            }
 
-        $path = request()?->path();
-        if (! $path || ! Str::is($pattern, $path)) {
-            return;
-        }
+            $pattern = Cache::get('sql_watch_url_pattern');
+            if (! $pattern) {
+                return;
+            }
 
-        log()->channel('single')->info('SQL', [
-            'sql' => $query->sql,
-            'bindings' => $query->bindings,
-            'time_ms' => $query->time,
-            'url' => request()->fullUrl(),
-        ]);
+            $path = request()?->path();
+            if (! $path || ! Str::is($pattern, $path)) {
+                return;
+            }
+
+            $bindings = is_array($query->bindings) ? $query->bindings : [];
+
+            $payload = [
+                'sql' => $query->sql,
+                'bindings_count' => count($bindings),
+                'bindings_types' => array_map(
+                    static fn (mixed $value): string => get_debug_type($value),
+                    $bindings
+                ),
+                'time_ms' => $query->time,
+                'url' => request()->fullUrl(),
+            ];
+
+            if ((bool) config('logging.verbose_sql', false)) {
+                $payload['bindings'] = $bindings;
+            }
+
+            log()->channel('single')->info('SQL', $payload);
+        });
     }
 }

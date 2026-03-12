@@ -23,7 +23,7 @@ final class Role extends ModelsRole
     }
 
     #[Scope]
-    public function visibleToUser($query): Builder
+    public function visibleToUser(Builder $query): Builder
     {
         if (auth()->user() && auth()->user()->hasRole('sudo')) {
             return $query;

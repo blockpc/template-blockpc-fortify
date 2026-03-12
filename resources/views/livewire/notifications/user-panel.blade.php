@@ -47,26 +47,6 @@
                             </div>
                         </div>
                     </div>
-                        {{-- <div class="flex items-start justify-between gap-2">
-                            <div class="grid gap-1">
-                                <p class="text-sm font-semibold">
-                                    {{ $notification->data['title'] }}
-                                </p>
-                                <p class="text-xs text-zinc-600 dark:text-zinc-300">
-                                    {!! nl2br(e($notification->data['content'])) !!}
-                                </p>
-                                <p class="text-sm font-semibold">
-                                    {{ __('system.notifications.from') }}: {{ $notification->data['author'] }}
-                                </p>
-                                <p class="text-xs font-semibold">
-                                    {{ $notification->data['sent_at'] }}
-                                </p>
-                            </div>
-
-                            <button type="button" wire:click="markAsRead('{{ $notification->id }}')" class="text-xs underline  hover:no-underline">
-                                {{ __('mark as read') }}
-                            </button>
-                        </div> --}}
                     </div>
                 @empty
                     <div class="rounded-lg border border-dashed p-4 text-sm text-zinc-500">

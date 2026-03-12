@@ -1,4 +1,3 @@
-
 <div>
     <div class="relative mb-6 w-full">
         <flux:heading size="xl" level="1">{{ __('system.roles.edit.title') }}</flux:heading>
@@ -28,10 +27,6 @@
                     @foreach ($this->permissions as $permission)
                         <div wire:key="permission-option-{{ $permission->id }}" class="flex items-center justify-between px-2 py-1 tr-hover" data-test="permission-{{ $permission->name }}">
                             <flux:checkbox label="{{ $permission->display_name }}" value="{{ $permission->name }}" wire:model="permissions_selecteds" data-test="permission-{{ $permission->name }}" />
-                            {{-- <label class="flex items-center space-x-2">
-                                <input type="checkbox" wire:model="permissions_selecteds" value="{{ $permission->name }}" class="form-checkbox h-4 w-4 text-blue-600" />
-                                <span class="text-sm">{{ $permission->display_name }}</span>
-                            </label> --}}
                             <div class="text-xs italic">{{ __('system.permissions.keys.'.$permission->key) }}</div>
                         </div>
                     @endforeach

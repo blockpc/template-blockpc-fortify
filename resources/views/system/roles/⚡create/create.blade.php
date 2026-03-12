@@ -27,10 +27,7 @@
                 <div class="mt-2 flex flex-col space-y-1 max-h-60 overflow-y-auto">
                     @foreach ($this->permissions as $permission)
                         <div wire:key="permission-option-{{ $permission->id }}" class="flex items-center justify-between px-2 py-1 tr-hover" data-test="permission-{{ $permission->name }}">
-                            <label class="flex items-center space-x-2">
-                                <input type="checkbox" wire:model="permissions_selecteds" value="{{ $permission->name }}" class="form-checkbox h-4 w-4 text-blue-600" />
-                                <span class="text-sm">{{ $permission->display_name }}</span>
-                            </label>
+                            <flux:checkbox label="{{ $permission->display_name }}" value="{{ $permission->name }}" wire:model="permissions_selecteds" data-test="permission-{{ $permission->name }}" />
                             <div class="text-xs italic">{{ __('system.permissions.keys.'.$permission->key) }}</div>
                         </div>
                     @endforeach
@@ -39,7 +36,7 @@
             </div>
 
             <div class="flex items-center justify-between">
-                <div class="">
+                <div class="flex items-center justify-start">
                     <flux:button variant="subtle" href="{{ route('roles.table') }}" class="w-full">
                         {{ __('system.roles.back_to_table') }}
                     </flux:button>

@@ -26,4 +26,9 @@ trait PaginationTrait
     {
         $this->resetPage();
     }
+
+    public function updatingSearch(): void
+    {
+        $this->resetPage();
+    }
 }

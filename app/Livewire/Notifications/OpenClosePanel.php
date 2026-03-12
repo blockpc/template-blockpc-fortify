@@ -35,8 +35,6 @@ final class OpenClosePanel extends Component
 
     /**
      * Triggers a re-render to recalculate unreadCount.
-     * @return void
      */
-    public function refresh(): void
-    {}
+    public function refresh(): void {}
 }

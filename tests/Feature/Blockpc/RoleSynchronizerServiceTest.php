@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Permission;
 use App\Models\Role;
 use Blockpc\App\Lists\RoleList;
 use Blockpc\App\Services\RoleSynchronizerService;
@@ -108,4 +109,30 @@ it('prune devuelve cero cuando no hay roles huérfanos', function () {
     $sync = app(RoleSynchronizerService::class);
 
     expect($sync->prune())->toBe(0);
+});
+
+it('sync no actualiza permisos de roles existentes modificados manualmente', function () {
+    $role = Role::query()->where('name', 'admin')->where('guard_name', 'web')->firstOrFail();
+    $customPermission = Permission::query()->where('name', 'users.create')->firstOrFail();
+
+    $role->syncPermissions([$customPermission->name]);
+
+    app(RoleSynchronizerService::class)->sync();
+
+    expect($role->fresh()->permissions->pluck('name')->all())
+        ->toEqualCanonicalizing([$customPermission->name]);
+});
+
+it('sync no limpia permisos de un rol existente aunque la lista definida sea vacia', function () {
+    $role = Role::query()->where('name', 'sudo')->where('guard_name', 'web')->firstOrFail();
+    $customPermission = Permission::query()->where('name', 'users.create')->firstOrFail();
+
+    $role->syncPermissions([$customPermission->name]);
+
+    expect(collect(RoleList::all())->firstWhere('name', 'sudo')['permissions'])->toBe([]);
+
+    app(RoleSynchronizerService::class)->sync();
+
+    expect($role->fresh()->permissions->pluck('name')->all())
+        ->toEqualCanonicalizing([$customPermission->name]);
 });

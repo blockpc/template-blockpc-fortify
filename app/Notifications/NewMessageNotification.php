@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
@@ -18,8 +17,7 @@ class NewMessageNotification extends Notification implements ShouldQueue
         public string $sentAt,
         public string $fromName,
         public int $fromId = 0,
-    ) {
-    }
+    ) {}
 
     public function via(object $notifiable): array
     {
@@ -38,7 +36,7 @@ class NewMessageNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * @return array{title: string, content: string, author: string, sent_at: string}
+     * @return array{title: string, content: string, author: string, sent_at: string, from_id: int}
      */
     public function toBroadcast(object $notifiable): BroadcastMessage
     {

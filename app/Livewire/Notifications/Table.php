@@ -41,8 +41,6 @@ class Table extends Component
         $notification = $this->user->notifications()->findOrFail($notificationId);
         $notification->markAsRead();
 
-        $this->forceRender();
-
         $this->dispatch('update-notifications')->to(OpenClosePanel::class);
     }
 
@@ -50,8 +48,6 @@ class Table extends Component
     {
         $notification = $this->user->notifications()->findOrFail($notificationId);
         $notification->markAsUnread();
-
-        $this->forceRender();
 
         $this->dispatch('update-notifications')->to(OpenClosePanel::class);
     }

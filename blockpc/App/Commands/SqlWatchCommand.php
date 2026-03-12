@@ -27,12 +27,14 @@ class SqlWatchCommand extends Command
     {
         if (! app()->isLocal()) {
             $this->warn('No se puede ejecutar en este entorno. Disponible solo en local.');
+
             return self::FAILURE;
         }
 
         if ($this->option('off')) {
             Cache::forget('sql_watch_url_pattern');
             $this->info('SQL watch desactivado.');
+
             return self::SUCCESS;
         }
 
@@ -42,6 +44,7 @@ class SqlWatchCommand extends Command
         if (! $pattern) {
             $current = Cache::get('sql_watch_url_pattern');
             $this->line('Patron actual: '.($current ?? 'ninguno'));
+
             return self::SUCCESS;
         }
 

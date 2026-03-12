@@ -14,10 +14,12 @@ use Livewire\Component;
 
 class UserPanel extends Component
 {
-    use Select2UsersNotificationsTrait, AlertBrowserEvent;
+    use AlertBrowserEvent, Select2UsersNotificationsTrait;
 
     public bool $open = false;
+
     public string $title = '';
+
     public string $content = '';
 
     public function getListeners(): array
@@ -98,8 +100,6 @@ class UserPanel extends Component
             );
         }
 
-        $this->forceRender();
-
         $this->dispatch('update-notifications')->to('notifications.open-close-panel');
     }
 
@@ -113,8 +113,6 @@ class UserPanel extends Component
             title: 'Notificaciones Leídas',
         );
 
-        $this->forceRender();
-
         $this->dispatch('update-notifications')->to('notifications.open-close-panel');
     }
 
@@ -123,18 +121,15 @@ class UserPanel extends Component
         return auth()->user()->unreadNotifications()->count();
     }
 
-    public function updatedClose(bool $value): void
+    public function updatedOpen(bool $value): void
     {
-        if (!$value) {
+        if (! $value) {
             $this->reset('searchUser', 'selectedUserId', 'selectedUserName');
         }
     }
 
     public function refreshFromBroadcast(): void
     {
-        $this->forceRender();
-
         $this->dispatch('update-notifications')->to('notifications.open-close-panel');
     }
-
 }

@@ -64,6 +64,8 @@ new class extends Component
 
     public function savePermission(): void
     {
+        abort_unless(auth()->user()?->can('permissions.edit'), 403, __('system.permissions.403.permissions-edit'));
+
         $this->validate(
             [
                 'display_name' => 'required|string|max:255',

@@ -68,7 +68,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     #[Scope]
-    public function visibleToUser($query): Builder
+    public function visibleToUser(Builder $query): Builder
     {
         if (auth()->user()?->hasRole('sudo')) {
             return $query;

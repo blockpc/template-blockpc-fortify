@@ -11,7 +11,9 @@ use Livewire\Attributes\Computed;
 trait Select2UsersNotificationsTrait
 {
     public string $searchUser = '';
+
     public int $selectedUserId = 0;
+
     public string $selectedUserName = '';
 
     #[Computed()]
@@ -27,11 +29,11 @@ trait Select2UsersNotificationsTrait
     {
         if (is_null($userId)) {
             $this->reset('searchUser', 'selectedUserId', 'selectedUserName');
+
             return;
         }
         $this->searchUser = '';
         $this->selectedUserId = $userId;
         $this->selectedUserName = $this->users()->get($userId, '');
     }
-
 }

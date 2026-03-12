@@ -27,6 +27,12 @@ final class AreEqualsRule implements ValidationRule
             return;
         }
 
+        if (! is_string($value)) {
+            $fail('The :attribute must be a string.');
+
+            return;
+        }
+
         if (strcmp($this->text, $value) !== 0) {
             $fail($this->message);
         }

@@ -49,13 +49,13 @@ trait Select2RolesTrait
 
         if ($isSelected) {
             $this->user->roles()->detach($roleId);
-            $this->user->loadMissing('roles');
+            $this->user->load('roles');
 
             return;
         }
 
         $this->user->roles()->syncWithoutDetaching([$roleId]);
-        $this->user->loadMissing('roles');
+        $this->user->load('roles');
     }
 
     public function loadRolesIds(): void
@@ -75,6 +75,6 @@ trait Select2RolesTrait
         }
 
         $this->user->roles()->detach($roleId);
-        $this->user->loadMissing('roles');
+        $this->user->load('roles');
     }
 }

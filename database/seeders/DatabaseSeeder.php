@@ -17,18 +17,22 @@ class DatabaseSeeder extends Seeder
 
         User::factory(10)->create();
 
-        $sudo = User::factory()->create([
-            'name' => 'Super Administrador',
-            'email' => 'sudo@mail.com',
-        ]);
+        $sudo = User::firstOrCreate(
+            ['email' => 'sudo@mail.com'],
+            User::factory()->make([
+                'name' => 'Super Administrador',
+                'email' => 'sudo@mail.com',
+            ])->toArray(),
+        );
+        $sudo->syncRoles(['sudo']);
 
-        $sudo->assignRole('sudo');
-
-        $testUser = User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@mail.com',
-        ]);
-
-        $testUser->assignRole('user');
+        $testUser = User::firstOrCreate(
+            ['email' => 'test@mail.com'],
+            User::factory()->make([
+                'name' => 'Test User',
+                'email' => 'test@mail.com',
+            ])->toArray(),
+        );
+        $testUser->syncRoles(['user']);
     }
 }

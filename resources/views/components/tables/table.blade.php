@@ -5,7 +5,9 @@
     <tbody class="tbody">
         {{ $tbody }}
     </tbody>
+    @isset($tfoot)
     <tfoot class="tfoot">
-        {{ $tfoot ?? '' }}
+        {{ $tfoot }}
     </tfoot>
+    @endisset
 </table>

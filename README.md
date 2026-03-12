@@ -1,16 +1,26 @@
-# Proyecto Blog SJM (Plantilla Blockpc)
+# Plantilla Blockpc (Fortify)
 
 Aplicación Laravel 12 con Livewire 4 + Flux UI, autenticación con Fortify y gestión de roles/permisos sobre Spatie Permission.
 
 ## Stack técnico
 
-- PHP 8.2+
+- PHP (mínimo soportado): 8.3
+- PHP (entorno recomendado con Sail): 8.5
 - Laravel 12
 - Livewire 4
 - Flux UI (free)
 - Tailwind CSS 4 + Vite
 - MariaDB (vía Sail)
 - Pest para testing
+
+## Compatibilidad de PHP
+
+El proyecto mantiene dos referencias de versión:
+
+- Compatibilidad mínima para dependencias y despliegues: PHP 8.3 (Composer).
+- Entorno de desarrollo recomendado: Sail con runtime PHP 8.5.
+
+Esto permite desarrollar en 8.5 sin perder compatibilidad con entornos de producción que sigan en 8.3+.
 
 ## Requisitos
 

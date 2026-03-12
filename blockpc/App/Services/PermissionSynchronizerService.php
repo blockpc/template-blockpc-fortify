@@ -7,6 +7,7 @@ namespace Blockpc\App\Services;
 use App\Models\Permission;
 use Blockpc\App\Lists\PermissionList;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 final class PermissionSynchronizerService
 {
@@ -102,7 +103,7 @@ final class PermissionSynchronizerService
         if (! is_string($name) || trim($name) === '') {
             $invalidContext = json_encode($permiso, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
-            throw new \InvalidArgumentException('El permiso no tiene un nombre válido. Definición recibida: '.$invalidContext);
+            throw new InvalidArgumentException('El permiso no tiene un nombre válido. Definición recibida: '.$invalidContext);
         }
 
         return [

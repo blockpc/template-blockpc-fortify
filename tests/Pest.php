@@ -11,6 +11,8 @@
 |
 */
 
+use App\Models\User;
+
 pest()->extend(Tests\TestCase::class)
     ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
     ->in('Feature');
@@ -37,7 +39,13 @@ pest()->extend(Tests\TestCase::class)
 |
 */
 
-function something()
+function new_user(?string $role = null): User
 {
-    // ..
+    $user = User::factory()->create();
+
+    if ($role) {
+        $user->assignRole($role);
+    }
+
+    return $user;
 }

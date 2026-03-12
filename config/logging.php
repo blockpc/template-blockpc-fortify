@@ -6,6 +6,7 @@ use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
 
 return [
+    'verbose_sql' => env('LOG_VERBOSE_SQL', false),
 
     /*
     |--------------------------------------------------------------------------

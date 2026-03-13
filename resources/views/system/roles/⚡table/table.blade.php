@@ -10,7 +10,9 @@
 
         <div class="flex items-center justify-between">
             <flux:input icon="magnifying-glass" :loading="false" :clearable="true" placeholder="{{ __('system.roles.search-roles') }}" wire:model.live.debounce.500ms="search" class="max-w-64" autocomplete="off" />
+            @can('roles.create')
             <flux:button variant="primary" color="blue" size="sm" href="{{ route('roles.create') }}">{{ __('system.roles.buttons.create') }}</flux:button>
+            @endcan
         </div>
 
         <x-tables.table>
@@ -34,8 +36,12 @@
                             <span class="text-xs italic">{{ $role->description }}</span>
                         </td>
                         <td class="td text-right space-x-2">
+                            @can('roles.edit')
                             <flux:button variant="primary" color="green" size="sm" href="{{ route('roles.edit', $role->id) }}">{{ __('system.roles.buttons.edit') }}</flux:button>
+                            @endcan
+                            @can('roles.delete')
                             <flux:button variant="danger" size="sm" wire:click="confirmDelete({{ $role->id }})">{{ __('system.roles.buttons.delete') }}</flux:button>
+                            @endcan
                         </td>
                     </tr>
                 @empty
@@ -52,13 +58,13 @@
     </div>
 
     {{-- modal eliminar --}}
-    <flux:modal name="delete-note" wire:model="deleteModalVisible" class="w-1/2" :closable="false">
+    <flux:modal name="delete-role" wire:model="deleteModalVisible" class="w-1/2" :closable="false">
         <div class="space-y-4">
             <flux:fieldset>
                 <flux:legend>{{ __('system.roles.delete.title') }}</flux:legend>
                 <flux:description>{{ trans('system.roles.delete.confirmation_message', ['name' => $current_name]) }}</flux:description>
                 <div class="space-y-4">
-                    <flux:input wire:model="name" :label="__('system.roles.delete.name_rol')" type="text" placeholder="{{ $current_name }}" required autocomplete="off" />
+                    <flux:input wire:model="name" :label="__('system.roles.delete.role_name')" type="text" placeholder="{{ $current_name }}" required autocomplete="off" />
                     <flux:input wire:model="password" :label="__('system.roles.delete.password')" type="password" required autocomplete="off" />
                     @error('password') <span class="text-sm text-red-600">{{ $message }}</span> @enderror
                 </div>
@@ -67,7 +73,9 @@
 
             <div class="flex justify-end gap-2">
                 <flux:button size="sm" variant="primary" color="yellow" wire:click="cancel">{{ __('Cancel') }}</flux:button>
-                <flux:button size="sm" variant="danger" wire:click="destroyRole">{{ __('system.roles.delete.button') }}</flux:button>
+                @can('roles.delete')
+                <flux:button size="sm" variant="danger" wire:click="destroyRole">{{ __('Delete') }}</flux:button>
+                @endcan
             </div>
         </div>
     </flux:modal>

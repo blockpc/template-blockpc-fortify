@@ -31,16 +31,19 @@ Esto permite desarrollar en 8.5 sin perder compatibilidad con entornos de produc
 ## Instalación rápida (recomendada con Sail)
 
 1. Clonar el repositorio.
-2. Instalar dependencias PHP:
 
-	```bash
-	composer install
-	```
-
-3. Crear `.env`:
+2. Crear `.env`:
 
 	```bash
 	cp .env.example .env
+	```
+
+Hacer los cambios necesarios sobre base de datos, correo, idioma, etc. en el archivo `.env`
+
+3. Instalar dependencias PHP:
+
+	```bash
+	composer install --ignore-platform-reqs
 	```
 
 4. Levantar contenedores:

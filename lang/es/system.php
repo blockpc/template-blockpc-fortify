@@ -117,7 +117,7 @@ return [
         'delete' => [
             'title' => 'Eliminar Rol',
             'button' => 'Sí, quiero eliminar este rol',
-            'name_rol' => 'Nombre del rol',
+            'role_name' => 'Nombre del rol',
             'password' => 'Contraseña',
             'confirmation_message' => '¿Estás seguro de que deseas eliminar este rol? Esta acción no se puede deshacer. Escriba :name y su contraseña para confirmar.',
             'success_message' => 'El rol se ha eliminado exitosamente.',
@@ -156,7 +156,7 @@ return [
         'delete' => [
             'title' => 'Eliminar Usuario',
             'button' => 'Sí, quiero eliminar este usuario',
-            'name_user' => 'Nombre del usuario',
+            'user_name' => 'Nombre del usuario',
             'password' => 'Contraseña',
             'confirmation_message' => '¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer. Escriba :name y su contraseña para confirmar.',
             'success_message' => 'El usuario se ha eliminado exitosamente.',

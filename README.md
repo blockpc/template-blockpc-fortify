@@ -43,8 +43,23 @@ Hacer los cambios necesarios sobre base de datos, correo, idioma, etc. en el arc
 3. Instalar dependencias PHP:
 
 	```bash
+	composer install
+	```
+
+	Si tu entorno local cumple los requisitos de PHP/extensiones, el comando anterior es suficiente.
+	Si prefieres usar siempre el runtime de Sail, puedes instalar las dependencias dentro del contenedor:
+
+	```bash
+	./vendor/bin/sail composer install
+	```
+
+	Como último recurso, si necesitas instalar dependencias en un entorno que no cumple los requisitos de plataforma, puedes usar:
+
+	```bash
 	composer install --ignore-platform-reqs
 	```
+
+	Ten en cuenta que `--ignore-platform-reqs` puede ocultar problemas de compatibilidad de PHP o extensiones y provocar errores en tiempo de ejecución.
 
 4. Levantar contenedores:
 

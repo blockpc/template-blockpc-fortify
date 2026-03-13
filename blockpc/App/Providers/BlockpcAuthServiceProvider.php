@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Blockpc\App\Providers;
 
+use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 
 final class BlockpcAuthServiceProvider extends ServiceProvider
 {
@@ -24,10 +26,16 @@ final class BlockpcAuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::before(function ($user, string $ability, array $arguments = []) {
-            return ($user->hasRole('sudo') || $user->hasPermissionTo('super admin'))
-                ? true
-                : null;
+        Gate::before(function (?User $user, string $ability, array $arguments = []) {
+            if (is_null($user)) {
+                return null;
+            }
+
+            if ($user->hasRole('sudo')) {
+                return true;
+            }
+
+            return $user->checkPermissionTo('super admin') ? true : null;
         });
     }
 }

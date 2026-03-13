@@ -87,11 +87,13 @@
                             {{ __('system.users.back_to_table') }}
                         </flux:button>
                     </div>
+                    @can('users.edit')
                     <div class="flex items-center justify-end">
                         <flux:button variant="primary" type="submit" color="green" class="w-full" data-test="edit-user-button">
                             {{ __('system.users.edit.save') }}
                         </flux:button>
                     </div>
+                    @endcan
                 </div>
             </div>
         </form>

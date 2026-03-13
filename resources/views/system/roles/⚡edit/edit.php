@@ -3,6 +3,8 @@
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
@@ -24,7 +26,7 @@ new class extends Component
 
     public function mount(): void
     {
-        abort_unless(auth()->user()?->can('roles.edit'), 403);
+        abort_unless(auth()->user()?->can('roles.edit'), 403, __('system.roles.403.roles-edit'));
 
         $this->display_name = $this->role->display_name;
         $this->description = $this->role->description;
@@ -51,8 +53,10 @@ new class extends Component
             ->pluck('key', 'key');
     }
 
-    public function save(): mixed
+    public function save(): Redirector|RedirectResponse|null
     {
+        abort_unless(auth()->user()?->can('roles.edit'), 403, __('system.roles.403.roles-edit'));
+
         $this->validate([
             'display_name' => 'required|string|max:255',
             'description' => 'required|string|max:255',

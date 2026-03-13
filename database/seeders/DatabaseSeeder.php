@@ -19,20 +19,26 @@ class DatabaseSeeder extends Seeder
 
         $sudo = User::firstOrCreate(
             ['email' => 'sudo@mail.com'],
-            User::factory()->make([
+            [
                 'name' => 'Super Administrador',
-                'email' => 'sudo@mail.com',
-            ])->toArray(),
+                'password' => 'password',
+            ]
         );
+        if (! $sudo->hasVerifiedEmail()) {
+            $sudo->markEmailAsVerified();
+        }
         $sudo->syncRoles(['sudo']);
 
         $testUser = User::firstOrCreate(
             ['email' => 'test@mail.com'],
-            User::factory()->make([
+            [
                 'name' => 'Test User',
-                'email' => 'test@mail.com',
-            ])->toArray(),
+                'password' => 'password',
+            ]
         );
+        if (! $testUser->hasVerifiedEmail()) {
+            $testUser->markEmailAsVerified();
+        }
         $testUser->syncRoles(['user']);
     }
 }

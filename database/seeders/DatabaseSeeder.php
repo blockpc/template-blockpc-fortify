@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
                 'password' => 'password',
             ]
         );
-        if ($sudo->wasRecentlyCreated) {
+        if (! $sudo->hasVerifiedEmail()) {
             $sudo->markEmailAsVerified();
         }
         $sudo->syncRoles(['sudo']);
@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
                 'password' => 'password',
             ]
         );
-        if ($testUser->wasRecentlyCreated) {
+        if (! $testUser->hasVerifiedEmail()) {
             $testUser->markEmailAsVerified();
         }
         $testUser->syncRoles(['user']);

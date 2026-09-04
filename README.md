@@ -1,17 +1,19 @@
 # Plantilla Blockpc (Fortify)
 
-Aplicación Laravel 12 con Livewire 4 + Flux UI, autenticación con Fortify y gestión de roles/permisos sobre Spatie Permission.
+Aplicación Laravel 13 con Livewire 4 + Flux UI, autenticación con Fortify y gestión de roles/permisos sobre Spatie Permission.
 
 ## Stack técnico
 
 - PHP (mínimo soportado): 8.3
 - PHP (entorno recomendado con Sail): 8.5
-- Laravel 12
+- Laravel 13
 - Livewire 4
 - Flux UI (free)
 - Tailwind CSS 4 + Vite
 - MariaDB (vía Sail)
 - Pest para testing
+
+La actualización a Laravel 13 mantiene la compatibilidad mínima con PHP 8.3 y utiliza PHP 8.5 en el entorno recomendado con Sail.
 
 ## Compatibilidad de PHP
 
@@ -168,7 +170,7 @@ Ejecutar tests:
 Ejecutar formato:
 
 ```bash
-vendor/bin/pint --dirty
+./vendor/bin/sail pint --dirty
 ```
 
 Scripts de Composer útiles:

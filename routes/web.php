@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Home;
 use App\Livewire\Notes\ListNotes;
 use App\Livewire\Notifications\Table;
 use App\Models\User;
@@ -7,9 +8,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', Home::class)->name('home');
 
 Route::get('/email/verify/invitation/{id}/{hash}', function (Request $request, int $id, string $hash) {
     $user = User::query()->findOrFail($id);
